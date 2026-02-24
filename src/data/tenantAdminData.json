@@ -1,0 +1,161 @@
+{
+    "overview": {
+        "tenantName": "Oakridge Care Group",
+        "metrics": [
+            {
+                "id": "m1",
+                "title": "Active Families",
+                "value": "142",
+                "trendType": "positive",
+                "trendValue": "+12 this month",
+                "iconType": "users"
+            },
+            {
+                "id": "m2",
+                "title": "Field Executives",
+                "value": "38",
+                "trendType": "neutral",
+                "trendValue": "2 offline",
+                "iconType": "briefcase"
+            },
+            {
+                "id": "m3",
+                "title": "Pending Alerts",
+                "value": "4",
+                "trendType": "negative",
+                "trendValue": "Requires attention",
+                "iconType": "alert"
+            },
+            {
+                "id": "m4",
+                "title": "Completed Visits",
+                "value": "1,204",
+                "trendType": "positive",
+                "trendValue": "+8% vs last week",
+                "iconType": "check"
+            }
+        ]
+    },
+    "fieldExecutives": [
+        {
+            "id": "fe1",
+            "name": "Sarah Jenkins",
+            "status": "On-Route",
+            "currentFamily": "The Smiths",
+            "eta": "10 mins"
+        },
+        {
+            "id": "fe2",
+            "name": "Michael Chang",
+            "status": "At Location",
+            "currentFamily": "Arthur Morgan",
+            "eta": "-"
+        },
+        {
+            "id": "fe3",
+            "name": "Emily Rodriguez",
+            "status": "Available",
+            "currentFamily": "-",
+            "eta": "-"
+        },
+        {
+            "id": "fe4",
+            "name": "David Kim",
+            "status": "Offline",
+            "currentFamily": "-",
+            "eta": "-"
+        }
+    ],
+    "families": [
+        {
+            "id": "f001",
+            "familyName": "The Smiths",
+            "primaryContact": "John Smith",
+            "phone": "+1 (555) 123-4567",
+            "subscription": "Premium",
+            "status": "Active",
+            "lastVisit": "Today, 10:00 AM"
+        },
+        {
+            "id": "f002",
+            "familyName": "Arthur Morgan",
+            "primaryContact": "Mary Linton",
+            "phone": "+1 (555) 987-6543",
+            "subscription": "Standard",
+            "status": "Attention",
+            "lastVisit": "Yesterday"
+        },
+        {
+            "id": "f003",
+            "familyName": "The Johnsons",
+            "primaryContact": "Robert Johnson",
+            "phone": "+1 (555) 456-7890",
+            "subscription": "Premium Plus",
+            "status": "Active",
+            "lastVisit": "2 Days Ago"
+        },
+        {
+            "id": "f004",
+            "familyName": "Eleanor Vance",
+            "primaryContact": "Luke Crain",
+            "phone": "+1 (555) 234-5678",
+            "subscription": "Basic",
+            "status": "Inactive",
+            "lastVisit": "1 Week Ago"
+        },
+        {
+            "id": "f005",
+            "familyName": "The Williams",
+            "primaryContact": "Susan Williams",
+            "phone": "+1 (555) 876-5432",
+            "subscription": "Premium",
+            "status": "Active",
+            "lastVisit": "Today, 1:30 PM"
+        },
+        {
+            "id": "f006",
+            "familyName": "James Holden",
+            "primaryContact": "Naomi Nagata",
+            "phone": "+1 (555) 345-6789",
+            "subscription": "Standard",
+            "status": "Active",
+            "lastVisit": "Yesterday"
+        },
+        {
+            "id": "f007",
+            "familyName": "The Coopers",
+            "primaryContact": "Sheldon Cooper",
+            "phone": "+1 (555) 765-4321",
+            "subscription": "Basic",
+            "status": "Active",
+            "lastVisit": "3 Days Ago"
+        },
+        {
+            "id": "f008",
+            "familyName": "The Hendersons",
+            "primaryContact": "George Henderson",
+            "phone": "+1 (555) 654-3210",
+            "subscription": "Premium Plus",
+            "status": "Attention",
+            "lastVisit": "Today, 8:00 AM"
+        },
+        {
+            "id": "f009",
+            "familyName": "The Millers",
+            "primaryContact": "Dave Miller",
+            "phone": "+1 (555) 543-2109",
+            "subscription": "Standard",
+            "status": "Active",
+            "lastVisit": "4 Days Ago"
+        },
+        {
+            "id": "f010",
+            "familyName": "Patricia Clark",
+            "primaryContact": "Brian Clark",
+            "phone": "+1 (555) 432-1098",
+            "subscription": "Premium",
+            "status": "Active",
+            "lastVisit": "Yesterday"
+        }
+    ]
+}

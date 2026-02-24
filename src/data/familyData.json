@@ -1,0 +1,65 @@
+{
+    "user": {
+        "name": "Sarah Jenkins",
+        "initials": "SJ",
+        "patientName": "Eleanor J.",
+        "relation": "Mom"
+    },
+    "notifications": {
+        "unreadCount": 3
+    },
+    "healthVitals": {
+        "status": "STABLE",
+        "statusColor": "green",
+        "heartRate": {
+            "value": 72,
+            "unit": "BPM"
+        },
+        "activity": {
+            "value": "2,450",
+            "unit": "Steps"
+        },
+        "sleep": {
+            "value": "7h 20m",
+            "tag": "DEEP SLEEP",
+            "tagColor": "blue"
+        }
+    },
+    "homeProperty": {
+        "overallStatus": "ALL CLEAR",
+        "overallColor": "green",
+        "sensors": [
+            {
+                "id": "sec-1",
+                "name": "Security",
+                "status": "Armed",
+                "state": "safe"
+            },
+            {
+                "id": "clim-1",
+                "name": "Climate",
+                "status": "72°F",
+                "state": "safe"
+            },
+            {
+                "id": "mot-1",
+                "name": "Motion",
+                "status": "Living Rm",
+                "state": "warning"
+            },
+            {
+                "id": "smk-1",
+                "name": "Smoke/Leak",
+                "status": "Clear",
+                "state": "safe"
+            }
+        ]
+    },
+    "liveCameras": [
+        {
+            "id": "cam-1",
+            "name": "Living Room Camera",
+            "isLive": true
+        }
+    ]
+}

@@ -1,0 +1,166 @@
+/* FieldExecutiveLayout.css - Mobile First PWA layout for Field Staff */
+
+.field-exec-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Header */
+.fe-header {
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1.5rem;
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 10;
+}
+
+.fe-header-profile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.fe-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #f59e0b;
+    /* Amber */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.fe-greeting {
+    display: flex;
+    flex-direction: column;
+}
+
+.fe-greeting span {
+    font-size: 0.75rem;
+    color: #10b981;
+    /* Green status indicator */
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.fe-greeting h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/* Main Content Area */
+.fe-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 1.5rem;
+    background-color: var(--bg-color);
+}
+
+.fe-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.fe-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.fe-content::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 10px;
+}
+
+.fe-content::-webkit-scrollbar-thumb:hover {
+    background: var(--text-color);
+}
+
+/* Bottom Navigation */
+.fe-bottom-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background-color: var(--card-bg);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+    z-index: 50;
+}
+
+[data-theme='dark'] .fe-bottom-nav {
+    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.4);
+}
+
+.fe-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    opacity: 0.5;
+    text-decoration: none;
+    font-size: 0.7rem;
+    font-weight: 500;
+    gap: 4px;
+    width: 60px;
+    transition: opacity 0.2s, color 0.2s;
+}
+
+.fe-nav-item:hover,
+.fe-nav-item.active {
+    opacity: 1;
+    color: var(--primary-color);
+}
+
+/* Center Check-In/SOS Area */
+.fe-scan-wrapper {
+    position: relative;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+}
+
+.fe-scan-button {
+    position: absolute;
+    bottom: 5px;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 242, 209, 0.4);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    z-index: 60;
+}
+
+.fe-scan-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 242, 209, 0.6);
+}
+
+.fe-scan-button:active {
+    transform: translateY(2px);
+}

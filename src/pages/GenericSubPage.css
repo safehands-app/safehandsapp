@@ -1,0 +1,178 @@
+.generic-sub-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    height: 100%;
+}
+
+.gsp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.gsp-header h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+    color: var(--text-color);
+}
+
+.gsp-header p {
+    margin: 0;
+    color: var(--text-color);
+    opacity: 0.6;
+    font-size: 0.9rem;
+}
+
+.gsp-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.gsp-btn-outline {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.gsp-btn-outline:hover {
+    background-color: rgba(128, 128, 128, 0.1);
+}
+
+.gsp-btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.4rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.gsp-content {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.gsp-toolbar {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-start;
+}
+
+.gsp-search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--border-color);
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    min-width: 250px;
+}
+
+.gsp-search input {
+    border: none;
+    background: transparent;
+    outline: none;
+    color: var(--text-color);
+    font-size: 0.85rem;
+    width: 100%;
+}
+
+.gsp-table-container {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.gsp-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.gsp-table th,
+.gsp-table td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.85rem;
+}
+
+.gsp-table th {
+    background-color: rgba(128, 128, 128, 0.05);
+    font-weight: 600;
+    color: var(--text-color);
+    opacity: 0.7;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.gsp-table td {
+    color: var(--text-color);
+}
+
+.gsp-icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.gsp-icon-btn:hover {
+    opacity: 1;
+}
+
+.gsp-pagination {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+.gsp-page-controls {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.gsp-page-controls button {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 0.3rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.gsp-page-controls button.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.gsp-page-controls button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}

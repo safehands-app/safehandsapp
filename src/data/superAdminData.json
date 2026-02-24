@@ -1,0 +1,91 @@
+{
+    "overview": {
+        "filter": "Last 30 Days",
+        "metrics": [
+            {
+                "id": "m1",
+                "title": "Total Active Tenants",
+                "value": "1,284",
+                "trendValue": "12%",
+                "trendType": "positive",
+                "iconType": "users"
+            },
+            {
+                "id": "m2",
+                "title": "Current MRR",
+                "value": "$4.21M",
+                "trendValue": "8.4%",
+                "trendType": "positive",
+                "iconType": "dollar"
+            },
+            {
+                "id": "m3",
+                "title": "Global Emergencies",
+                "value": "12",
+                "trendValue": "-2%",
+                "trendType": "negative",
+                "iconType": "alert"
+            },
+            {
+                "id": "m4",
+                "title": "Platform Health",
+                "value": "99.98%",
+                "trendValue": "Stable",
+                "trendType": "neutral",
+                "iconType": "activity"
+            }
+        ]
+    },
+    "liveActivity": [
+        {
+            "id": "act-1",
+            "type": "alert",
+            "title": "SOS Alert triggered",
+            "context": "by Eleanor J.",
+            "detail": "Tenant: CareTech Boston • 2 mins ago"
+        },
+        {
+            "id": "act-2",
+            "type": "users",
+            "title": "New Tenant Onboarded",
+            "context": "",
+            "detail": "Sunrise Senior Living • 15 mins ago"
+        },
+        {
+            "id": "act-3",
+            "type": "activity",
+            "title": "API Latency Spike",
+            "context": "detected",
+            "detail": "US-East Region • 1 hr ago"
+        }
+    ],
+    "tenants": [
+        {
+            "id": "CT-9012",
+            "name": "CareTech Boston",
+            "health": "Healthy",
+            "subscription": "Multi-Region Pro",
+            "mrr": "$12,500",
+            "users": 450,
+            "lastEvent": "2 mins ago"
+        },
+        {
+            "id": "SS-5531",
+            "name": "Sunrise Senior",
+            "health": "Warning",
+            "subscription": "Standard",
+            "mrr": "$4,200",
+            "users": 120,
+            "lastEvent": "1 hr ago"
+        },
+        {
+            "id": "OW-2204",
+            "name": "Oakwood Care",
+            "health": "Critical",
+            "subscription": "Global Scale",
+            "mrr": "$45,000",
+            "users": 2100,
+            "lastEvent": "Just now"
+        }
+    ]
+}

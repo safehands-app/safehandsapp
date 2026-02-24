@@ -1,0 +1,49 @@
+{
+    "user": {
+        "name": "Marcus Kane",
+        "initials": "MK",
+        "role": "Senior Security Guard",
+        "status": "On Duty",
+        "statusColor": "green"
+    },
+    "notifications": {
+        "unreadCount": 2
+    },
+    "currentShift": {
+        "startTime": "08:00 AM",
+        "endTime": "06:00 PM",
+        "hoursLogged": "4h 30m"
+    },
+    "todayItinerary": [
+        {
+            "id": "A-101",
+            "client": "Jenkins Family",
+            "address": "1245 Maple Drive, Oakridge",
+            "time": "10:00 AM - 11:30 AM",
+            "type": "Wellness Check",
+            "status": "COMPLETED",
+            "statusColor": "gray",
+            "urgent": false
+        },
+        {
+            "id": "A-102",
+            "client": "Chen Residence",
+            "address": "88 Riverside Ave, Suite 4B",
+            "time": "01:00 PM - 02:30 PM",
+            "type": "Security Patrol",
+            "status": "IN PROGRESS",
+            "statusColor": "blue",
+            "urgent": false
+        },
+        {
+            "id": "A-103",
+            "client": "Smith Property",
+            "address": "42 Pinehill Road",
+            "time": "03:30 PM - 04:00 PM",
+            "type": "Alarm Reset",
+            "status": "PENDING",
+            "statusColor": "amber",
+            "urgent": true
+        }
+    ]
+}
