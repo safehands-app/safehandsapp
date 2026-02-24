@@ -1,29 +1,24 @@
-import { app, BrowserWindow } from "electron";
-import path from "path";
-import { fileURLToPath } from "url";
-const __dirname$1 = path.dirname(fileURLToPath(import.meta.url));
-function createWindow() {
-  const win = new BrowserWindow({
+import { app as e, BrowserWindow as r } from "electron";
+import o from "path";
+import { fileURLToPath as a } from "url";
+const i = o.dirname(a(import.meta.url));
+function t() {
+  const n = new r({
     width: 1200,
     height: 800,
     webPreferences: {
-      preload: path.join(__dirname$1, "preload.mjs"),
-      contextIsolation: true,
-      nodeIntegration: false
+      preload: o.join(i, "preload.mjs"),
+      contextIsolation: !0,
+      nodeIntegration: !1
     }
   });
-  if (process.env.VITE_DEV_SERVER_URL) {
-    win.loadURL(process.env.VITE_DEV_SERVER_URL);
-  } else {
-    win.loadFile(path.join(__dirname$1, "../dist/index.html"));
-  }
+  process.env.VITE_DEV_SERVER_URL ? n.loadURL(process.env.VITE_DEV_SERVER_URL) : n.loadFile(o.join(i, "../dist/index.html"));
 }
-app.whenReady().then(() => {
-  createWindow();
-  app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+e.whenReady().then(() => {
+  t(), e.on("activate", () => {
+    r.getAllWindows().length === 0 && t();
   });
 });
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") app.quit();
+e.on("window-all-closed", () => {
+  process.platform !== "darwin" && e.quit();
 });

@@ -1,4 +1,4 @@
-import { Bell, AlertCircle, CheckCircle, Info } from 'lucide-react';
+import { AlertCircle, CheckCircle, Info } from 'lucide-react';
 import './NotificationDropdown.css';
 
 interface Notification {

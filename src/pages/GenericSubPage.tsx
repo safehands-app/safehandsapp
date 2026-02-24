@@ -11,7 +11,7 @@ export function GenericSubPage({ title, description, columns }: GenericSubPagePr
     // Generate some dummy rows based on the columns
     const dummyData = Array.from({ length: 8 }).map((_, i) => {
         const row: Record<string, string> = { id: `row-${i}` };
-        columns.forEach((col, j) => {
+        columns.forEach((col) => {
             row[col] = `Sample ${col} ${i + 1}`;
         });
         return row;
