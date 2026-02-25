@@ -1,0 +1,227 @@
+.vendor-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.vendor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.vendor-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+    color: var(--text-color);
+}
+
+.vendor-header p {
+    color: var(--text-color);
+    opacity: 0.6;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.vendor-date {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    background-color: rgba(0, 242, 209, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+}
+
+.vendor-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+}
+
+.vendor-metric-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.vendor-metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.vendor-metric-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vendor-metric-content {
+    flex: 1;
+}
+
+.vendor-metric-content h3 {
+    margin: 0 0 0.25rem 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-color);
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.metric-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.vendor-content-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    .vendor-content-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.vendor-panel {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.vendor-panel-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.vendor-panel-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.text-btn {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+}
+
+.text-btn:hover {
+    text-decoration: underline;
+}
+
+.vendor-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.vendor-list-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    gap: 1rem;
+    transition: background-color 0.2s;
+}
+
+.vendor-list-item:last-child {
+    border-bottom: none;
+}
+
+.vendor-list-item:hover {
+    background-color: rgba(128, 128, 128, 0.05);
+}
+
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--border-color);
+}
+
+.status-indicator.urgent {
+    background-color: #ef4444;
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+}
+
+.status-indicator.pending {
+    background-color: #f59e0b;
+}
+
+.status-indicator.scheduled {
+    background-color: #3b82f6;
+}
+
+.vendor-item-main {
+    flex: 1;
+}
+
+.vendor-item-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.15rem;
+}
+
+.vendor-item-sub {
+    font-size: 0.8rem;
+    opacity: 0.6;
+}
+
+.vendor-item-meta {
+    text-align: right;
+    font-size: 0.8rem;
+}
+
+.vendor-item-loc {
+    font-weight: 500;
+}
+
+.vendor-item-time {
+    opacity: 0.6;
+}
+
+.vendor-badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.vendor-badge.offline {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.vendor-badge.maintenance-due {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+.vendor-badge.online {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
