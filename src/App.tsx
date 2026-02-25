@@ -14,6 +14,9 @@ import { TenantAdminLayout } from './components/TenantAdminLayout'
 import { TenantAdminDashboard } from './pages/TenantAdminDashboard'
 import { FieldExecutiveLayout } from './components/FieldExecutiveLayout'
 import { FieldExecutiveDashboard } from './pages/FieldExecutiveDashboard'
+import { FieldExecutiveSchedule } from './pages/FieldExecutiveSchedule'
+import { FieldExecutivePatientContext } from './pages/FieldExecutivePatientContext'
+import { FieldExecutiveServiceReport } from './pages/FieldExecutiveServiceReport'
 import { GenericSubPage } from './pages/GenericSubPage'
 
 // Component to handle root redirect based on authentication
@@ -86,7 +89,9 @@ function App() {
           <Route element={<ProtectedRoute allowedRoles={['field-executive']} />}>
             <Route element={<FieldExecutiveLayout />}>
               <Route path="/field-exec" element={<FieldExecutiveDashboard />} />
-              <Route path="/field-exec/schedule" element={<GenericSubPage title="My Schedule" description="Your upcoming assigned shifts and scheduled time off." columns={['Date', 'Shift Type', 'Location', 'Status']} />} />
+              <Route path="/field-exec/schedule" element={<FieldExecutiveSchedule />} />
+              <Route path="/field-exec/patient/:id" element={<FieldExecutivePatientContext />} />
+              <Route path="/field-exec/report/:id" element={<FieldExecutiveServiceReport />} />
               <Route path="/field-exec/visits" element={<GenericSubPage title="Visit History" description="Log of all completed service visits and submitted reports." columns={['Visit ID', 'Client', 'Date', 'Time Spent', 'Status']} />} />
               <Route path="/field-exec/profile" element={<GenericSubPage title="My Profile" description="Manage your employee details, certifications, and availability." columns={['Certification', 'Valid Until', 'Status', 'Actions']} />} />
             </Route>

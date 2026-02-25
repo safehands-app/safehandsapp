@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Clock, MapPin, CheckCircle, Navigation, Phone, ShieldAlert } from 'lucide-react';
 import './FieldExecutiveDashboard.css';
 import fieldExecData from '../data/fieldExecData.json';
@@ -62,7 +63,10 @@ export function FieldExecutiveDashboard() {
                             </div>
 
                             <div>
-                                <h4 className="fe-job-client">{job.client}</h4>
+                                <Link to={`/field-exec/patient/${job.id}`} style={{ textDecoration: 'none' }}>
+                                    <h4 className="fe-job-client" style={{ display: 'inline-block' }}>{job.client}</h4>
+                                </Link>
+                                <br />
                                 <span className="fe-job-type">{job.type}</span>
                             </div>
 

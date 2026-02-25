@@ -3,6 +3,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Home, ClipboardList, MapPin, User, ShieldAlert, Navigation, LogOut, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../theme-provider';
 import { useAuth } from '../context/AuthContext';
+import { FeScanModal } from './FeScanModal';
 import './FieldExecutiveLayout.css';
 import fieldExecData from '../data/fieldExecData.json';
 
@@ -13,6 +14,7 @@ export function FieldExecutiveLayout() {
     const { user } = fieldExecData;
 
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [isScanOpen, setIsScanOpen] = useState(false);
 
     const toggleTheme = () => {
         setTheme(theme === 'light' ? 'dark' : 'light');
@@ -80,7 +82,7 @@ export function FieldExecutiveLayout() {
 
                 {/* Center FAB: Quick Scan / Maps */}
                 <div className="fe-scan-wrapper">
-                    <button className="fe-scan-button" title="Quick Check-In">
+                    <button className="fe-scan-button" title="Quick Check-In" onClick={() => setIsScanOpen(true)}>
                         <MapPin size={28} />
                     </button>
                 </div>
@@ -94,6 +96,8 @@ export function FieldExecutiveLayout() {
                     <span>Me</span>
                 </Link>
             </nav>
+
+            <FeScanModal isOpen={isScanOpen} onClose={() => setIsScanOpen(false)} />
         </div>
     );
 }
