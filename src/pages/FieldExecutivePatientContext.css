@@ -1,0 +1,167 @@
+/* FieldExecutivePatientContext.css */
+
+.fe-patient-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    padding-bottom: 2rem;
+}
+
+.fe-patient-top {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: -0.5rem;
+}
+
+.fe-back-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.fe-patient-header {
+    background: linear-gradient(135deg, rgba(0, 242, 209, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+.fe-patient-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: var(--card-bg);
+    border: 2px solid var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    font-size: 2rem;
+    font-weight: 700;
+    box-shadow: 0 0 20px rgba(0, 242, 209, 0.2);
+}
+
+.fe-patient-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.fe-patient-info h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: var(--text-color);
+}
+
+.fe-patient-meta {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.fe-tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.fe-condition-tag {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.fe-condition-tag.safe {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border-color: rgba(16, 185, 129, 0.2);
+}
+
+.fe-context-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.fe-context-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.fe-context-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    opacity: 0.7;
+    margin-bottom: 0.5rem;
+}
+
+.fe-context-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.fe-context-subtext {
+    font-size: 0.75rem;
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.fe-access-notes {
+    background-color: rgba(245, 158, 11, 0.05);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: 16px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.fe-access-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.fe-access-icon {
+    color: #f59e0b;
+    margin-top: 2px;
+}
+
+.fe-patient-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}

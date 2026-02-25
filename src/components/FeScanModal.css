@@ -1,0 +1,190 @@
+/* FeScanModal.css */
+.fe-scan-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    /* Mobile bottom sheet style */
+    opacity: 0;
+    animation: fadeIn 0.2s forwards;
+}
+
+.fe-scan-modal {
+    background-color: var(--card-bg);
+    width: 100%;
+    max-width: 600px;
+    /* tablet constraint */
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    padding: 1.5rem;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
+    transform: translateY(100%);
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+[data-theme='dark'] .fe-scan-modal {
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+    border-top: 1px solid var(--border-color);
+}
+
+.fe-scan-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    opacity: 0.5;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fe-scan-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.fe-scan-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    background-color: rgba(0, 242, 209, 0.1);
+    color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.fe-scan-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.fe-scan-header p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.fe-scan-location {
+    background-color: rgba(128, 128, 128, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.fe-scan-loc-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.fe-scan-loc-details strong {
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+.fe-scan-loc-details span {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.fe-scan-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.fe-scan-input-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+.fe-scan-input-group textarea {
+    width: 100%;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem;
+    color: var(--text-color);
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+}
+
+.fe-scan-action-btn {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 12px;
+    border: none;
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.fe-scan-btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 242, 209, 0.3);
+}
+
+.fe-scan-btn-primary:active {
+    transform: scale(0.98);
+    background-color: #00d4b5;
+}
+
+.fe-scan-btn-sos {
+    background-color: transparent;
+    border: 2px solid #ef4444;
+    color: #ef4444;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

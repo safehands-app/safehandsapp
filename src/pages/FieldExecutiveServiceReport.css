@@ -1,0 +1,133 @@
+/* FieldExecutiveServiceReport.css */
+
+.fe-report-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    padding-bottom: 2rem;
+}
+
+.fe-report-top {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.fe-report-top h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.fe-report-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.fe-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.fe-form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+.fe-form-group input[type="text"],
+.fe-form-group input[type="time"],
+.fe-form-group textarea {
+    width: 100%;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.85rem;
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.fe-form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.fe-form-group input:focus,
+.fe-form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 242, 209, 0.2);
+}
+
+.fe-time-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.fe-tags-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.fe-selectable-tag {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 0.6rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.fe-selectable-tag.selected {
+    background-color: rgba(0, 242, 209, 0.1);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.fe-submit-area {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.fe-report-submit-btn {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 12px;
+    border: none;
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 242, 209, 0.3);
+    transition: all 0.2s;
+}
+
+.fe-report-submit-btn:active {
+    transform: scale(0.98);
+}
