@@ -17,6 +17,9 @@ import { FieldExecutiveDashboard } from './pages/FieldExecutiveDashboard'
 import { FieldExecutiveSchedule } from './pages/FieldExecutiveSchedule'
 import { FieldExecutivePatientContext } from './pages/FieldExecutivePatientContext'
 import { FieldExecutiveServiceReport } from './pages/FieldExecutiveServiceReport'
+import { VendorLayout } from './components/VendorLayout'
+import { VendorDashboard } from './pages/VendorDashboard'
+import { VendorTickets } from './pages/VendorTickets'
 import { GenericSubPage } from './pages/GenericSubPage'
 
 // Component to handle root redirect based on authentication
@@ -33,6 +36,7 @@ function RootRedirect() {
     case 'tenant-admin': return <Navigate to="/tenant-admin" replace />;
     case 'family': return <Navigate to="/family" replace />;
     case 'field-executive': return <Navigate to="/field-exec" replace />;
+    case 'vendor': return <Navigate to="/vendor" replace />;
     default: return <Navigate to="/auth/login" replace />;
   }
 }
@@ -94,6 +98,17 @@ function App() {
               <Route path="/field-exec/report/:id" element={<FieldExecutiveServiceReport />} />
               <Route path="/field-exec/visits" element={<GenericSubPage title="Visit History" description="Log of all completed service visits and submitted reports." columns={['Visit ID', 'Client', 'Date', 'Time Spent', 'Status']} />} />
               <Route path="/field-exec/profile" element={<GenericSubPage title="My Profile" description="Manage your employee details, certifications, and availability." columns={['Certification', 'Valid Until', 'Status', 'Actions']} />} />
+            </Route>
+          </Route>
+
+          {/* Vendor Routes (Protected) */}
+          <Route element={<ProtectedRoute allowedRoles={['vendor']} />}>
+            <Route element={<VendorLayout />}>
+              <Route path="/vendor" element={<VendorDashboard />} />
+              <Route path="/vendor/tickets" element={<VendorTickets />} />
+              <Route path="/vendor/assets" element={<GenericSubPage title="Asset Tracking" description="Manage deployed equipment and physical hardware." columns={['Asset ID', 'Name', 'Location', 'Status', 'Last Ping']} />} />
+              <Route path="/vendor/financials" element={<GenericSubPage title="Financials" description="Invoicing, payouts, and historical statements." columns={['Invoice ID', 'Date', 'Amount', 'Status', 'Actions']} />} />
+              <Route path="/vendor/settings" element={<GenericSubPage title="Partner Settings" description="Manage your company profile and integration settings." columns={['Setting', 'Value', 'Status', 'Actions']} />} />
             </Route>
           </Route>
 

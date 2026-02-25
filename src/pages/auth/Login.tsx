@@ -106,6 +106,10 @@ export function Login() {
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span>Field Exec:</span> <strong>field@safehands.com</strong>
                     </div>
+                    {/* New entry for Vendor Portal */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', color: '#f59e0b' }}>
+                        <span>Vendor:</span> <strong>vendor@acme.com</strong>
+                    </div>
                 </div>
             </div>
 

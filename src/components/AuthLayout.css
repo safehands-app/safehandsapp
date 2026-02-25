@@ -150,7 +150,7 @@
     padding: 3rem 2rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     background-color: var(--card-bg);
     overflow-y: auto;
 }
@@ -198,11 +198,13 @@
 
 /* Global Auth Form Component Styles */
 .auth-page {
-    flex: 1;
+    flex: 1 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     animation: fadeIn 0.4s ease-out;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
 .auth-page h2 {

@@ -12,10 +12,11 @@ interface Notification {
 interface NotificationDropdownProps {
     isOpen: boolean;
     onClose: () => void;
-    notifications: Notification[];
+    notifications?: Notification[];
+    role?: string;
 }
 
-export function NotificationDropdown({ isOpen, onClose, notifications }: NotificationDropdownProps) {
+export function NotificationDropdown({ isOpen, onClose, notifications = [] }: NotificationDropdownProps) {
     if (!isOpen) return null;
 
     return (

@@ -1,0 +1,66 @@
+{
+    "user": {
+        "id": "v101",
+        "name": "Acme Medical Supplies",
+        "email": "vendor@acme.com",
+        "role": "vendor",
+        "initials": "AC",
+        "status": "Verified Partner"
+    },
+    "metrics": {
+        "openTickets": 14,
+        "assetsDeployed": 342,
+        "assetsOffline": 3,
+        "pendingInvoices": 2,
+        "totalEarnedYTD": "$45,200"
+    },
+    "serviceQueue": [
+        {
+            "id": "TKT-8832",
+            "type": "Equipment Repair",
+            "item": "Oxygen Concentrator",
+            "location": "Oakridge Facility - Rm 12A",
+            "status": "URGENT",
+            "created": "2 hours ago"
+        },
+        {
+            "id": "TKT-8833",
+            "type": "Restock",
+            "item": "Wound Care Kits (x50)",
+            "location": "Regional Warehouse",
+            "status": "PENDING",
+            "created": "1 day ago"
+        },
+        {
+            "id": "TKT-8820",
+            "type": "Preventative Maintenance",
+            "item": "Lift Chair System",
+            "location": "Chen Residence",
+            "status": "SCHEDULED",
+            "created": "3 days ago"
+        }
+    ],
+    "assets": [
+        {
+            "id": "AST-1044",
+            "name": "O2 Sensor Module v2",
+            "assignedTo": "Oakridge Facility",
+            "status": "OFFLINE",
+            "lastPing": "12 hours ago"
+        },
+        {
+            "id": "AST-0992",
+            "name": "Smart Bed Monitor",
+            "assignedTo": "Williams Residence",
+            "status": "ONLINE",
+            "lastPing": "2 mins ago"
+        },
+        {
+            "id": "AST-1105",
+            "name": "Vital Monitor Hub",
+            "assignedTo": "Oakridge Facility",
+            "status": "MAINTENANCE DUE",
+            "lastPing": "5 mins ago"
+        }
+    ]
+}

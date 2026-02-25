@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
 
-export type Role = 'family' | 'super-admin' | 'tenant-admin' | 'field-executive' | null;
+export type Role = 'family' | 'super-admin' | 'tenant-admin' | 'field-executive' | 'vendor' | null;
 
 interface User {
     id: string;
@@ -43,6 +43,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } else if (lowerEmail.includes("field")) {
             // Associated with fieldExecData.json -> Marcus Kane
             matchedUser = { id: 'u4', email: lowerEmail, role: 'field-executive', name: 'Marcus Kane' };
+        } else if (lowerEmail.includes("vendor")) {
+            // Associated with vendorData.json -> Acme Medical Supplies
+            matchedUser = { id: 'v101', email: lowerEmail, role: 'vendor', name: 'Acme Medical Supplies' };
         } else {
             // Fallback default super admin
             matchedUser = { id: 'u99', email: lowerEmail, role: 'super-admin', name: 'Guest Admin' };
