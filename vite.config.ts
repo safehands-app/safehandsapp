@@ -6,9 +6,10 @@ import { VitePWA } from 'vite-plugin-pwa';
 import path from 'path';
 
 export default defineConfig({
+  base: process.env.VERCEL ? '/' : undefined,
   plugins: [
     react(),
-    electron([
+    !process.env.VERCEL && electron([
       {
         entry: 'electron/main.ts',
         onstart(options) {
@@ -22,7 +23,7 @@ export default defineConfig({
         },
       },
     ]),
-    renderer(),
+    !process.env.VERCEL && renderer(),
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: 'inline',
@@ -58,7 +59,7 @@ export default defineConfig({
         enabled: true,
       },
     }),
-  ],
+  ].filter(Boolean),
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
