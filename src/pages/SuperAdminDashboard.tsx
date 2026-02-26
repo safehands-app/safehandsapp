@@ -1,4 +1,4 @@
-import { Users, DollarSign, AlertCircle, Activity, ArrowUpRight, ArrowDownRight, MoreHorizontal } from 'lucide-react';
+import { Users, IndianRupee, AlertCircle, Activity, ArrowUpRight, ArrowDownRight, MoreHorizontal } from 'lucide-react';
 import './SuperAdminDashboard.css';
 import superAdminData from '../data/superAdminData.json';
 
@@ -6,7 +6,7 @@ import superAdminData from '../data/superAdminData.json';
 const getIcon = (type: string, size = 18) => {
     switch (type) {
         case 'users': return <Users size={size} />;
-        case 'dollar': return <DollarSign size={size} />;
+        case 'rupee': return <IndianRupee size={size} />;
         case 'alert': return <AlertCircle size={size} />;
         case 'activity': return <Activity size={size} />;
         default: return <Activity size={size} />;
@@ -30,8 +30,8 @@ export function SuperAdminDashboard() {
                         <div className="sa-metric-header">
                             <span className="sa-metric-title">{metric.title}</span>
                             <div className={`sa-icon-wrapper ${metric.iconType === 'users' ? 'teal' :
-                                    metric.iconType === 'dollar' ? 'green' :
-                                        metric.iconType === 'alert' ? 'red' : 'blue'
+                                metric.iconType === 'rupee' ? 'green' :
+                                    metric.iconType === 'alert' ? 'red' : 'blue'
                                 }`}>
                                 {getIcon(metric.iconType)}
                             </div>
@@ -79,7 +79,7 @@ export function SuperAdminDashboard() {
                         {liveActivity.map((activity) => (
                             <div key={activity.id} className="sa-activity-item">
                                 <div className={`sa-activity-icon ${activity.type === 'alert' ? 'red' :
-                                        activity.type === 'users' ? 'teal' : 'amber'
+                                    activity.type === 'users' ? 'teal' : 'amber'
                                     }`}>
                                     {getIcon(activity.type, 14)}
                                 </div>
@@ -119,7 +119,7 @@ export function SuperAdminDashboard() {
                                     <td><strong>{tenant.name}</strong><br /><span>ID: {tenant.id}</span></td>
                                     <td>
                                         <span className={`sa-badge-table ${tenant.health === 'Healthy' ? 'green' :
-                                                tenant.health === 'Warning' ? 'amber' : 'red'
+                                            tenant.health === 'Warning' ? 'amber' : 'red'
                                             }`}>
                                             {tenant.health}
                                         </span>

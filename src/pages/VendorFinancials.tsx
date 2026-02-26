@@ -1,4 +1,4 @@
-import { DollarSign, Download, Plus, FileText, CheckCircle, Clock } from 'lucide-react';
+import { IndianRupee, Download, Plus, FileText, CheckCircle, Clock } from 'lucide-react';
 import './VendorFinancials.css';
 import vendorData from '../data/vendorData.json';
 
@@ -31,7 +31,7 @@ export function VendorFinancials() {
             <div className="vf-summary-grid">
                 <div className="vf-summary-card balance">
                     <div className="vf-card-icon">
-                        <DollarSign size={24} />
+                        <IndianRupee size={24} />
                     </div>
                     <div className="vf-card-content">
                         <h3>Outstanding Balance</h3>
@@ -51,7 +51,7 @@ export function VendorFinancials() {
                 <div className="vf-summary-card">
                     <div className="vf-card-content">
                         <h3>Total YTD Revenue</h3>
-                        <div className="vf-value">$142,500.00</div>
+                        <div className="vf-value">₹38,50,000.00</div>
                         <p>Jan 1 - Present</p>
                     </div>
                 </div>

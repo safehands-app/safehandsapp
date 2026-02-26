@@ -48,7 +48,7 @@ const generateRealisticData = (col: string, i: number) => {
 
     // Money / MRR / Amount
     if (c.includes('mrr') || c.includes('amount')) {
-        return `$${(450 * (i + 1)).toLocaleString()}`;
+        return `₹${(450 * (i + 1)).toLocaleString()}`;
     }
 
     // Numeric metrics
