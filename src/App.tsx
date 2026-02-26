@@ -23,6 +23,7 @@ import { VendorTickets } from './pages/VendorTickets'
 import { VendorAssets } from './pages/VendorAssets'
 import { VendorFinancials } from './pages/VendorFinancials'
 import { GenericSubPage } from './pages/GenericSubPage'
+import { InstallPrompt } from './components/InstallPrompt'
 
 // Component to handle root redirect based on authentication
 function RootRedirect() {
@@ -117,6 +118,7 @@ function App() {
           {/* Fallback to root */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        <InstallPrompt />
       </BrowserRouter>
     </AuthProvider>
   )
