@@ -13,10 +13,10 @@
             {
                 "id": "m2",
                 "title": "Current MRR",
-                "value": "$4.21M",
+                "value": "₹35.4Cr",
                 "trendValue": "8.4%",
                 "trendType": "positive",
-                "iconType": "dollar"
+                "iconType": "rupee"
             },
             {
                 "id": "m3",
@@ -65,7 +65,7 @@
             "name": "CareTech Boston",
             "health": "Healthy",
             "subscription": "Multi-Region Pro",
-            "mrr": "$12,500",
+            "mrr": "₹10,50,000",
             "users": 450,
             "lastEvent": "2 mins ago"
         },
@@ -74,7 +74,7 @@
             "name": "Sunrise Senior",
             "health": "Warning",
             "subscription": "Standard",
-            "mrr": "$4,200",
+            "mrr": "₹3,50,000",
             "users": 120,
             "lastEvent": "1 hr ago"
         },
@@ -83,7 +83,7 @@
             "name": "Oakwood Care",
             "health": "Critical",
             "subscription": "Global Scale",
-            "mrr": "$45,000",
+            "mrr": "₹37,80,000",
             "users": 2100,
             "lastEvent": "Just now"
         }
