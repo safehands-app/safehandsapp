@@ -25,12 +25,16 @@ export default defineConfig({
     renderer(),
     VitePWA({
       registerType: 'autoUpdate',
+      injectRegister: 'auto',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
       manifest: {
         name: 'SafeHands Dash',
         short_name: 'SafeHands',
         description: 'SafeHands Dashboard Application',
         theme_color: '#ffffff',
+        background_color: '#0f172a',
+        display: 'standalone',
+        start_url: '/',
         icons: [
           {
             src: 'pwa-192x192.png',
