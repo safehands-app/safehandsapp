@@ -24,6 +24,7 @@ import { VendorAssets } from './pages/VendorAssets'
 import { VendorFinancials } from './pages/VendorFinancials'
 import { GenericSubPage } from './pages/GenericSubPage'
 import { InstallPrompt } from './components/InstallPrompt'
+import { LandingPage } from './pages/LandingPage'
 
 // Component to handle root redirect based on authentication
 function RootRedirect() {
@@ -49,8 +50,11 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Root redirect handles where users go primarily */}
-          <Route path="/" element={<RootRedirect />} />
+          {/* Public Landing Page */}
+          <Route path="/" element={<LandingPage />} />
+
+          {/* Dashboard redirect handles where logged-in users go primarily */}
+          <Route path="/dashboard" element={<RootRedirect />} />
 
           {/* Authentication Routes (Public access) */}
           <Route path="/auth" element={<AuthLayout />}>
