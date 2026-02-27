@@ -32,7 +32,7 @@ export default defineConfig({
         name: 'SafeHands Dash',
         short_name: 'SafeHands',
         description: 'SafeHands Dashboard Application',
-        theme_color: '#ffffff',
+        theme_color: '#0f172a',
         background_color: '#0f172a',
         display: 'standalone',
         start_url: '/',
