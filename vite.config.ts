@@ -6,7 +6,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import path from 'path';
 
 export default defineConfig({
-  base: process.env.VERCEL ? '/' : undefined,
+  base: process.env.VERCEL ? '/' : './',
   plugins: [
     react(),
     !process.env.VERCEL && electron([
@@ -32,7 +32,7 @@ export default defineConfig({
         name: 'SafeHands Dash',
         short_name: 'SafeHands',
         description: 'SafeHands Dashboard Application',
-        theme_color: '#ffffff',
+        theme_color: '#0f172a',
         background_color: '#0f172a',
         display: 'standalone',
         start_url: '/',
