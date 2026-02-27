@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 
 export type Role = 'family' | 'super-admin' | 'tenant-admin' | 'field-executive' | 'vendor' | null;
@@ -21,7 +21,30 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-    const [user, setUser] = useState<User | null>(null);
+    // Initialize state from localStorage if available
+    const [user, setUser] = useState<User | null>(() => {
+        try {
+            const savedUser = localStorage.getItem('safehands_auth_user');
+            if (savedUser) {
+                return JSON.parse(savedUser);
+            }
+        } catch (error) {
+            console.error('Failed to parse user from local storage:', error);
+        }
+        return null;
+    });
+
+    // Sync state changes to localStorage
+    useEffect(() => {
+        if (user) {
+            localStorage.setItem('safehands_auth_user', JSON.stringify(user));
+            // Simulate storing a JWT token for "backend" consistency
+            localStorage.setItem('safehands_auth_token', `mock_jwt_token_${user.id}_${Date.now()}`);
+        } else {
+            localStorage.removeItem('safehands_auth_user');
+            localStorage.removeItem('safehands_auth_token');
+        }
+    }, [user]);
 
     // Mock login function that determines role based on email input
     const login = (email: string) => {
