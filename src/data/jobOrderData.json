@@ -1,0 +1,194 @@
+{
+    "jobTypes": [
+        "House Cleaning",
+        "Plumbing Fix",
+        "Security Check",
+        "Medical Check-in",
+        "Electrical Repair",
+        "HVAC Maintenance",
+        "Carpentry Work",
+        "Pest Control",
+        "Garden Maintenance",
+        "General Inspection"
+    ],
+    "jobs": [
+        {
+            "id": "job-001",
+            "type": "House Cleaning",
+            "description": "Deep cleaning of the entire apartment including kitchen and bathrooms.",
+            "status": "REQUESTED",
+            "priority": "normal",
+            "familyId": "u1",
+            "familyName": "Sarah Jenkins",
+            "familyAddress": "42 Elm Street, Apt 3B, Mumbai",
+            "assignedExecId": null,
+            "assignedExecName": null,
+            "supervisorId": "s1",
+            "supervisorName": "Ravi Menon",
+            "region": "Mumbai North",
+            "requestedAt": "2026-03-04T07:00:00Z",
+            "scheduledAt": "2026-03-05T09:00:00Z",
+            "completedAt": null,
+            "beforePhotos": [],
+            "afterPhotos": [],
+            "notes": ""
+        },
+        {
+            "id": "job-002",
+            "type": "Plumbing Fix",
+            "description": "Kitchen sink is leaking. Water dripping from beneath the basin.",
+            "status": "ASSIGNED",
+            "priority": "high",
+            "familyId": "u1",
+            "familyName": "Sarah Jenkins",
+            "familyAddress": "42 Elm Street, Apt 3B, Mumbai",
+            "assignedExecId": "u4",
+            "assignedExecName": "Marcus Kane",
+            "supervisorId": "s1",
+            "supervisorName": "Ravi Menon",
+            "region": "Mumbai North",
+            "requestedAt": "2026-03-03T10:00:00Z",
+            "scheduledAt": "2026-03-04T11:00:00Z",
+            "completedAt": null,
+            "beforePhotos": [],
+            "afterPhotos": [],
+            "notes": "Please bring pipe sealant tape."
+        },
+        {
+            "id": "job-003",
+            "type": "Security Check",
+            "description": "Monthly security check-in. Inspect door locks, window latches, and alarm system.",
+            "status": "IN_PROGRESS",
+            "priority": "normal",
+            "familyId": "u1",
+            "familyName": "Sarah Jenkins",
+            "familyAddress": "42 Elm Street, Apt 3B, Mumbai",
+            "assignedExecId": "u4",
+            "assignedExecName": "Marcus Kane",
+            "supervisorId": "s1",
+            "supervisorName": "Ravi Menon",
+            "region": "Mumbai North",
+            "requestedAt": "2026-03-02T08:00:00Z",
+            "scheduledAt": "2026-03-03T10:00:00Z",
+            "completedAt": null,
+            "beforePhotos": [
+                {
+                    "id": "bp1",
+                    "url": "https://placehold.co/600x400/1e293b/94a3b8?text=Before+Photo+1",
+                    "caption": "Front door lock condition"
+                },
+                {
+                    "id": "bp2",
+                    "url": "https://placehold.co/600x400/1e293b/94a3b8?text=Before+Photo+2",
+                    "caption": "Alarm panel status"
+                }
+            ],
+            "afterPhotos": [],
+            "notes": "Alarm panel needs battery replacement."
+        },
+        {
+            "id": "job-004",
+            "type": "Electrical Repair",
+            "description": "Main switchboard sparking intermittently. Urgent fix required.",
+            "status": "DONE",
+            "priority": "urgent",
+            "familyId": "u1",
+            "familyName": "Sarah Jenkins",
+            "familyAddress": "42 Elm Street, Apt 3B, Mumbai",
+            "assignedExecId": "u4",
+            "assignedExecName": "Marcus Kane",
+            "supervisorId": "s1",
+            "supervisorName": "Ravi Menon",
+            "region": "Mumbai North",
+            "requestedAt": "2026-03-01T06:00:00Z",
+            "scheduledAt": "2026-03-01T09:00:00Z",
+            "completedAt": null,
+            "beforePhotos": [
+                {
+                    "id": "bp3",
+                    "url": "https://placehold.co/600x400/1e293b/ef4444?text=Before+-+Damaged+Switchboard",
+                    "caption": "Damaged switchboard before repair"
+                }
+            ],
+            "afterPhotos": [
+                {
+                    "id": "ap1",
+                    "url": "https://placehold.co/600x400/1e293b/22c55e?text=After+-+Fixed+Switchboard",
+                    "caption": "Switchboard after repair"
+                }
+            ],
+            "notes": "Replaced faulty circuit breaker. All connections are now secure."
+        },
+        {
+            "id": "job-005",
+            "type": "HVAC Maintenance",
+            "description": "Annual servicing and filter replacement for air conditioning units.",
+            "status": "COMPLETED",
+            "priority": "normal",
+            "familyId": "u1",
+            "familyName": "Sarah Jenkins",
+            "familyAddress": "42 Elm Street, Apt 3B, Mumbai",
+            "assignedExecId": "u4",
+            "assignedExecName": "Marcus Kane",
+            "supervisorId": "s1",
+            "supervisorName": "Ravi Menon",
+            "region": "Mumbai North",
+            "requestedAt": "2026-02-20T08:00:00Z",
+            "scheduledAt": "2026-02-22T10:00:00Z",
+            "completedAt": "2026-02-22T14:30:00Z",
+            "beforePhotos": [
+                {
+                    "id": "bp4",
+                    "url": "https://placehold.co/600x400/1e293b/94a3b8?text=Before+-+Dirty+Filter",
+                    "caption": "Old clogged filter"
+                }
+            ],
+            "afterPhotos": [
+                {
+                    "id": "ap2",
+                    "url": "https://placehold.co/600x400/1e293b/22c55e?text=After+-+Clean+Unit",
+                    "caption": "Unit after full service"
+                }
+            ],
+            "notes": "Filters replaced with grade-A HEPA filters. System running optimally."
+        }
+    ],
+    "fieldExecutives": [
+        {
+            "id": "u4",
+            "name": "Marcus Kane",
+            "region": "Mumbai North",
+            "status": "On-Job",
+            "currentJobId": "job-003",
+            "jobsCompleted": 47,
+            "rating": 4.8
+        },
+        {
+            "id": "fe2",
+            "name": "Priya Sharma",
+            "region": "Mumbai North",
+            "status": "Free",
+            "currentJobId": null,
+            "jobsCompleted": 32,
+            "rating": 4.6
+        },
+        {
+            "id": "fe3",
+            "name": "David Osei",
+            "region": "Mumbai South",
+            "status": "Free",
+            "currentJobId": null,
+            "jobsCompleted": 58,
+            "rating": 4.9
+        },
+        {
+            "id": "fe4",
+            "name": "Anika Patel",
+            "region": "Mumbai Central",
+            "status": "On-Job",
+            "currentJobId": "job-002",
+            "jobsCompleted": 21,
+            "rating": 4.5
+        }
+    ]
+}
