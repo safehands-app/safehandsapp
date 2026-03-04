@@ -1,10 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Shield, Activity, Users, ArrowRight, ShieldCheck, HeartPulse, Building2, Truck } from 'lucide-react';
+import { useTheme } from '../theme-provider';
+import { Shield, Activity, Users, ArrowRight, ShieldCheck, HeartPulse, Building2, Truck, Sun, Moon } from 'lucide-react';
 import './LandingPage.css';
 
 export function LandingPage() {
     const { isAuthenticated } = useAuth();
+    const { theme, setTheme } = useTheme();
+    const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
 
     return (
         <div className="landing-page">
@@ -16,6 +19,9 @@ export function LandingPage() {
                 <nav className="lp-nav">
                     <a href="#features">Features</a>
                     <a href="#solutions">Solutions</a>
+                    <button className="lp-theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
+                        {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                    </button>
                     {isAuthenticated ? (
                         <Link to="/dashboard" className="lp-btn-primary">
                             Go to Dashboard <ArrowRight size={16} />
@@ -80,7 +86,6 @@ export function LandingPage() {
 
                 <section id="features" className="lp-features">
                     <div className="lp-section-header">
-                        <h2>One Platform. Five Unified Portals.</h2>
                         <p>Designed specifically for the complex ecosystem of modern remote healthcare and property management.</p>
                     </div>
                     <div className="lp-features-grid">

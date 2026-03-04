@@ -53,7 +53,9 @@ function RootRedirect() {
   }
 }
 
-const isElectron = navigator.userAgent.toLowerCase().includes('electron');
+// Use window.electron (set by preload) as the reliable Electron detection.
+// navigator.userAgent check fails in some packaged builds.
+const isElectron = typeof window !== 'undefined' && !!(window as any).electron;
 const Router = isElectron ? HashRouter : BrowserRouter;
 
 function App() {
