@@ -7,7 +7,11 @@ import './LandingPage.css';
 export function LandingPage() {
     const { isAuthenticated } = useAuth();
     const { theme, setTheme } = useTheme();
-    const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
+    // Resolve the actual visual theme — 'system' could be dark or light
+    const resolvedTheme = theme === 'system'
+        ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        : theme;
+    const toggleTheme = () => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
 
     return (
         <div className="landing-page">
@@ -20,7 +24,9 @@ export function LandingPage() {
                     <a href="#features">Features</a>
                     <a href="#solutions">Solutions</a>
                     <button className="lp-theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
-                        {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                        {resolvedTheme === 'dark'
+                            ? <Sun size={18} color="#ffffff" strokeWidth={2} />
+                            : <Moon size={18} color="#0f172a" strokeWidth={2} />}
                     </button>
                     {isAuthenticated ? (
                         <Link to="/dashboard" className="lp-btn-primary">
