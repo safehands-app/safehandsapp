@@ -1,10 +1,17 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Shield, Activity, Users, ArrowRight, ShieldCheck, HeartPulse, Building2, Truck } from 'lucide-react';
+import { useTheme } from '../theme-provider';
+import { Shield, Activity, Users, ArrowRight, ShieldCheck, HeartPulse, Building2, Truck, Sun, Moon } from 'lucide-react';
 import './LandingPage.css';
 
 export function LandingPage() {
     const { isAuthenticated } = useAuth();
+    const { theme, setTheme } = useTheme();
+    // Resolve the actual visual theme — 'system' could be dark or light
+    const resolvedTheme = theme === 'system'
+        ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        : theme;
+    const toggleTheme = () => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
 
     return (
         <div className="landing-page">
@@ -16,6 +23,11 @@ export function LandingPage() {
                 <nav className="lp-nav">
                     <a href="#features">Features</a>
                     <a href="#solutions">Solutions</a>
+                    <button className="lp-theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
+                        {resolvedTheme === 'dark'
+                            ? <Sun size={18} color="#ffffff" strokeWidth={2} />
+                            : <Moon size={18} color="#0f172a" strokeWidth={2} />}
+                    </button>
                     {isAuthenticated ? (
                         <Link to="/dashboard" className="lp-btn-primary">
                             Go to Dashboard <ArrowRight size={16} />
@@ -80,7 +92,6 @@ export function LandingPage() {
 
                 <section id="features" className="lp-features">
                     <div className="lp-section-header">
-                        <h2>One Platform. Five Unified Portals.</h2>
                         <p>Designed specifically for the complex ecosystem of modern remote healthcare and property management.</p>
                     </div>
                     <div className="lp-features-grid">

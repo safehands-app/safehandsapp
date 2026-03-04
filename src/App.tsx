@@ -8,6 +8,7 @@ import { Register } from './pages/auth/Register'
 import { ForgotPassword } from './pages/auth/ForgotPassword'
 import { FamilyLayout } from './components/FamilyLayout'
 import { FamilyDashboard } from './pages/FamilyDashboard'
+import { FamilyJobTracker } from './pages/FamilyJobTracker'
 import { SuperAdminLayout } from './components/SuperAdminLayout'
 import { SuperAdminDashboard } from './pages/SuperAdminDashboard'
 import { TenantAdminLayout } from './components/TenantAdminLayout'
@@ -17,11 +18,17 @@ import { FieldExecutiveDashboard } from './pages/FieldExecutiveDashboard'
 import { FieldExecutiveSchedule } from './pages/FieldExecutiveSchedule'
 import { FieldExecutivePatientContext } from './pages/FieldExecutivePatientContext'
 import { FieldExecutiveServiceReport } from './pages/FieldExecutiveServiceReport'
+import { FieldExecutiveJobDetail } from './pages/FieldExecutiveJobDetail'
 import { VendorLayout } from './components/VendorLayout'
 import { VendorDashboard } from './pages/VendorDashboard'
 import { VendorTickets } from './pages/VendorTickets'
 import { VendorAssets } from './pages/VendorAssets'
 import { VendorFinancials } from './pages/VendorFinancials'
+import { SupervisorLayout } from './components/SupervisorLayout'
+import { SupervisorDashboard } from './pages/SupervisorDashboard'
+import { SupervisorJobQueue } from './pages/SupervisorJobQueue'
+import { SupervisorReviewJob } from './pages/SupervisorReviewJob'
+import { SupervisorExecManagement } from './pages/SupervisorExecManagement'
 import { GenericSubPage } from './pages/GenericSubPage'
 import { InstallPrompt } from './components/InstallPrompt'
 import { LandingPage } from './pages/LandingPage'
@@ -41,11 +48,14 @@ function RootRedirect() {
     case 'family': return <Navigate to="/family" replace />;
     case 'field-executive': return <Navigate to="/field-exec" replace />;
     case 'vendor': return <Navigate to="/vendor" replace />;
+    case 'supervisor': return <Navigate to="/supervisor" replace />;
     default: return <Navigate to="/auth/login" replace />;
   }
 }
 
-const isElectron = navigator.userAgent.toLowerCase().includes('electron');
+// Use window.electron (set by preload) as the reliable Electron detection.
+// navigator.userAgent check fails in some packaged builds.
+const isElectron = typeof window !== 'undefined' && !!(window as any).electron;
 const Router = isElectron ? HashRouter : BrowserRouter;
 
 function App() {
@@ -70,6 +80,7 @@ function App() {
           <Route element={<ProtectedRoute allowedRoles={['family']} />}>
             <Route element={<FamilyLayout />}>
               <Route path="/family" element={<FamilyDashboard />} />
+              <Route path="/family/jobs" element={<FamilyJobTracker />} />
               <Route path="/family/reports" element={<GenericSubPage title="Service Reports" description="View and download historical care reports." columns={['Date', 'Caregiver', 'Duration', 'Status']} />} />
               <Route path="/family/schedule" element={<GenericSubPage title="Upcoming Schedule" description="Manage your assigned nursing and maintenance visits." columns={['Date & Time', 'Service Type', 'Assigned To', 'Status']} />} />
               <Route path="/family/members" element={<GenericSubPage title="Family Members" description="Manage access and profiles for your household." columns={['Name', 'Role', 'Phone', 'Access Level']} />} />
@@ -106,6 +117,7 @@ function App() {
               <Route path="/field-exec/schedule" element={<FieldExecutiveSchedule />} />
               <Route path="/field-exec/patient/:id" element={<FieldExecutivePatientContext />} />
               <Route path="/field-exec/report/:id" element={<FieldExecutiveServiceReport />} />
+              <Route path="/field-exec/job/:id" element={<FieldExecutiveJobDetail />} />
               <Route path="/field-exec/visits" element={<GenericSubPage title="Visit History" description="Log of all completed service visits and submitted reports." columns={['Visit ID', 'Client', 'Date', 'Time Spent', 'Status']} />} />
               <Route path="/field-exec/profile" element={<GenericSubPage title="My Profile" description="Manage your employee details, certifications, and availability." columns={['Certification', 'Valid Until', 'Status', 'Actions']} />} />
             </Route>
@@ -119,6 +131,16 @@ function App() {
               <Route path="/vendor/assets" element={<VendorAssets />} />
               <Route path="/vendor/financials" element={<VendorFinancials />} />
               <Route path="/vendor/settings" element={<GenericSubPage title="Partner Settings" description="Manage your company profile and integration settings." columns={['Setting', 'Value', 'Status', 'Actions']} />} />
+            </Route>
+          </Route>
+
+          {/* Supervisor Routes (Protected) */}
+          <Route element={<ProtectedRoute allowedRoles={['supervisor']} />}>
+            <Route element={<SupervisorLayout />}>
+              <Route path="/supervisor" element={<SupervisorDashboard />} />
+              <Route path="/supervisor/queue" element={<SupervisorJobQueue />} />
+              <Route path="/supervisor/review" element={<SupervisorReviewJob />} />
+              <Route path="/supervisor/executives" element={<SupervisorExecManagement />} />
             </Route>
           </Route>
 
