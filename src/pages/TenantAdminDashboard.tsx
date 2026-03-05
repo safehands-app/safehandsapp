@@ -1,24 +1,60 @@
-import { Users, AlertCircle, Briefcase, CheckCircle, MoreHorizontal, MessageSquare, MapPin, Plus } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Users, AlertCircle, Briefcase, MessageSquare, MoreHorizontal, MapPin, Plus } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 import './TenantAdminDashboard.css';
-import tenantData from '../data/tenantAdminData.json';
 
-const getIcon = (type: string, size = 18) => {
-    switch (type) {
-        case 'users': return <Users size={size} />;
-        case 'briefcase': return <Briefcase size={size} />;
-        case 'alert': return <AlertCircle size={size} />;
-        case 'check': return <CheckCircle size={size} />;
-        default: return <Briefcase size={size} />;
-    }
-}
+type ProfileRow = {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+    created_at: string;
+};
 
 export function TenantAdminDashboard() {
-    const { overview, families, fieldExecutives } = tenantData;
+    const [families, setFamilies] = useState<ProfileRow[]>([]);
+    const [execs, setExecs] = useState<ProfileRow[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchTenantData = async () => {
+            try {
+                // Fetch profiles with role 'family'
+                const { data: familyData } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('role', 'family')
+                    .order('created_at', { ascending: false })
+                    .limit(5);
+
+                // Fetch profiles with role 'field-executive'
+                const { data: execData } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('role', 'field-executive')
+                    .order('created_at', { ascending: false })
+                    .limit(5);
+
+                setFamilies(familyData || []);
+                setExecs(execData || []);
+            } catch (err) {
+                console.error("Failed to load tenant data", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchTenantData();
+    }, []);
+
+    if (loading) {
+        return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading Tenant Dashboard...</div>;
+    }
 
     return (
         <div className="ta-dashboard">
             <div className="ta-page-header">
-                <h1>{overview.tenantName} Dashboard</h1>
+                <h1>Tenant Operations Dashboard</h1>
                 <button className="ta-btn-primary">
                     <Plus size={16} /> New Enrollment
                 </button>
@@ -26,25 +62,44 @@ export function TenantAdminDashboard() {
 
             {/* 4-Column Metric Grid */}
             <section className="ta-metric-grid">
-                {overview.metrics.map((metric) => (
-                    <div key={metric.id} className="ta-metric-card">
-                        <div className="ta-metric-header">
-                            <span className="ta-metric-title">{metric.title}</span>
-                            <div className={`ta-icon-wrapper ${metric.iconType === 'users' ? 'indigo' :
-                                    metric.iconType === 'alert' ? 'red' :
-                                        metric.iconType === 'check' ? 'green' : 'amber'
-                                }`}>
-                                {getIcon(metric.iconType)}
-                            </div>
-                        </div>
-                        <div className="ta-metric-body">
-                            <span className="ta-metric-value">{metric.value}</span>
-                            <span className={`ta-metric-trend ${metric.trendType}`}>
-                                {metric.trendValue}
-                            </span>
+                <div className="ta-metric-card">
+                    <div className="ta-metric-header">
+                        <span className="ta-metric-title">Enrolled Families</span>
+                        <div className="ta-icon-wrapper indigo">
+                            <Users size={18} />
                         </div>
                     </div>
-                ))}
+                    <div className="ta-metric-body">
+                        <span className="ta-metric-value">{families.length}</span>
+                        <span className="ta-metric-trend positive">Active</span>
+                    </div>
+                </div>
+
+                <div className="ta-metric-card">
+                    <div className="ta-metric-header">
+                        <span className="ta-metric-title">Active Field Execs</span>
+                        <div className="ta-icon-wrapper green">
+                            <Briefcase size={18} />
+                        </div>
+                    </div>
+                    <div className="ta-metric-body">
+                        <span className="ta-metric-value">{execs.length}</span>
+                        <span className="ta-metric-trend positive">Available</span>
+                    </div>
+                </div>
+
+                <div className="ta-metric-card">
+                    <div className="ta-metric-header">
+                        <span className="ta-metric-title">Critical Alerts</span>
+                        <div className="ta-icon-wrapper red">
+                            <AlertCircle size={18} />
+                        </div>
+                    </div>
+                    <div className="ta-metric-body">
+                        <span className="ta-metric-value">0</span>
+                        <span className="ta-metric-trend positive">All Clear</span>
+                    </div>
+                </div>
             </section>
 
             {/* Main Columns: Families Table (Left) & Executives (Right) */}
@@ -53,7 +108,7 @@ export function TenantAdminDashboard() {
                 {/* Families Data Table */}
                 <div className="ta-widget">
                     <div className="ta-widget-header">
-                        <h3>Enrolled Families</h3>
+                        <h3>Recently Enrolled Families</h3>
                         <button className="ta-btn-outline">View All</button>
                     </div>
 
@@ -62,33 +117,33 @@ export function TenantAdminDashboard() {
                             <thead>
                                 <tr>
                                     <th>Family Name</th>
-                                    <th>Contact</th>
+                                    <th>Email Contact</th>
                                     <th>Status</th>
-                                    <th>Plan</th>
-                                    <th>Last Visit</th>
+                                    <th>Joined Date</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {families.map((family) => (
+                                {families.length > 0 ? families.map((family) => (
                                     <tr key={family.id}>
-                                        <td><strong>{family.familyName}</strong><br /><span>ID: {family.id}</span></td>
-                                        <td>{family.primaryContact}<br /><span>{family.phone}</span></td>
+                                        <td><strong>{family.name}</strong><br /><span style={{ fontSize: '0.75rem', color: '#64748b' }}>ID: {family.id.slice(0, 8)}...</span></td>
+                                        <td>{family.email}</td>
                                         <td>
-                                            <span className={`ta-badge-table ${family.status === 'Active' ? 'green' :
-                                                    family.status === 'Attention' ? 'amber' : 'gray'
-                                                }`}>
-                                                {family.status}
+                                            <span className="ta-badge-table green">
+                                                Active
                                             </span>
                                         </td>
-                                        <td>{family.subscription}</td>
-                                        <td>{family.lastVisit}</td>
+                                        <td style={{ color: '#64748b', fontSize: '0.85rem' }}>{new Date(family.created_at).toLocaleDateString()}</td>
                                         <td className="ta-table-actions">
                                             <button className="ta-btn-outline" title="Message Family"><MessageSquare size={14} /></button>
                                             <button className="ta-btn-outline" title="More Options"><MoreHorizontal size={14} /></button>
                                         </td>
                                     </tr>
-                                ))}
+                                )) : (
+                                    <tr>
+                                        <td colSpan={5} style={{ textAlign: 'center', padding: '2rem', color: '#64748b' }}>No families enrolled yet.</td>
+                                    </tr>
+                                )}
                             </tbody>
                         </table>
                     </div>
@@ -102,27 +157,28 @@ export function TenantAdminDashboard() {
                     </div>
 
                     <div className="ta-executives-list">
-                        {fieldExecutives.map((exec) => (
+                        {execs.length > 0 ? execs.map((exec) => (
                             <div key={exec.id} className="ta-executive-item">
                                 <div className="ta-exec-info">
                                     <div className="ta-exec-avatar">
-                                        {exec.name.split(' ').map(n => n[0]).join('')}
+                                        {exec.name.charAt(0).toUpperCase()}
                                     </div>
                                     <div className="ta-exec-details">
                                         <span className="ta-exec-name">{exec.name}</span>
-                                        <span className="ta-exec-task">
-                                            {exec.currentFamily !== '-' ? `At: ${exec.currentFamily}` : 'No active assignment'}
+                                        <span className="ta-exec-task" style={{ fontSize: '0.75rem', color: '#64748b' }}>
+                                            {exec.email}
                                         </span>
                                     </div>
                                 </div>
                                 <div className="ta-exec-status">
-                                    <span className={`dot-status ${exec.status.toLowerCase().replace(' ', '-')}`}>
-                                        {exec.status}
+                                    <span className="dot-status on-job">
+                                        Active
                                     </span>
-                                    {exec.eta !== '-' && <span className="ta-exec-eta">ETA: {exec.eta}</span>}
                                 </div>
                             </div>
-                        ))}
+                        )) : (
+                            <div style={{ textAlign: 'center', padding: '2rem', color: '#64748b' }}>No field executives assigned yet.</div>
+                        )}
                     </div>
                 </div>
 

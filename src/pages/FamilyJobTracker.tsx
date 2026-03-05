@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import jobData from '../data/jobOrderData.json';
+import { useAuth } from '../context/AuthContext';
+import { useJobs } from '../hooks/useJobs';
 import { CheckCircle2, Clock, Wrench, User, MapPin, ChevronDown, ChevronUp } from 'lucide-react';
 import './FamilyJobTracker.css';
 
@@ -53,10 +54,12 @@ function JobStatusStepper({ status }: { status: string }) {
 }
 
 export function FamilyJobTracker() {
+    const { user } = useAuth();
+    const { jobs: allJobs, loading } = useJobs({ familyId: user?.id || undefined, realtime: true });
+
     const [expandedJob, setExpandedJob] = useState<string | null>(null);
     const [filter, setFilter] = useState<'active' | 'all'>('active');
 
-    const allJobs = jobData.jobs;
     const displayedJobs = filter === 'active'
         ? allJobs.filter(j => j.status !== 'COMPLETED')
         : allJobs;
@@ -87,7 +90,9 @@ export function FamilyJobTracker() {
                 </div>
             </div>
 
-            {displayedJobs.length === 0 && (
+            {loading && <div style={{ padding: '2rem', textAlign: 'center' }}>Loading your jobs...</div>}
+
+            {!loading && displayedJobs.length === 0 && (
                 <div className="family-job-tracker__empty">
                     <CheckCircle2 size={40} />
                     <h3>All done!</h3>
@@ -108,7 +113,7 @@ export function FamilyJobTracker() {
                                     </div>
                                     <div>
                                         <h4 className="family-job-card__type">{job.type}</h4>
-                                        <p className="family-job-card__meta">Requested {formatDate(job.requestedAt)}</p>
+                                        <p className="family-job-card__meta">Requested {formatDate(job.requested_at)}</p>
                                     </div>
                                 </div>
                                 <div className="family-job-card__right">
@@ -126,18 +131,18 @@ export function FamilyJobTracker() {
                                     <div className="family-job-card__details">
                                         <div className="family-job-card__detail-row">
                                             <MapPin size={14} />
-                                            <span>{job.familyAddress}</span>
+                                            <span>{'Address unavailable'}</span>
                                         </div>
-                                        {job.assignedExecName && (
+                                        {job.assigned_exec && (
                                             <div className="family-job-card__detail-row">
                                                 <User size={14} />
-                                                <span>Assigned to <strong>{job.assignedExecName}</strong></span>
+                                                <span>Assigned to <strong>{job.assigned_exec.name}</strong></span>
                                             </div>
                                         )}
-                                        {job.scheduledAt && (
+                                        {job.scheduled_at && (
                                             <div className="family-job-card__detail-row">
                                                 <Clock size={14} />
-                                                <span>Scheduled: {formatDate(job.scheduledAt)}</span>
+                                                <span>Scheduled: {formatDate(job.scheduled_at)}</span>
                                             </div>
                                         )}
                                     </div>
@@ -147,24 +152,24 @@ export function FamilyJobTracker() {
                                     </div>
 
                                     {/* Before/After Photos */}
-                                    {(job.beforePhotos.length > 0 || job.afterPhotos.length > 0) && (
+                                    {((job.before_photos?.length || 0) > 0 || (job.after_photos?.length || 0) > 0) && (
                                         <div className="family-job-card__photos">
-                                            {job.beforePhotos.length > 0 && (
+                                            {(job.before_photos?.length || 0) > 0 && (
                                                 <div className="family-job-card__photo-section">
                                                     <span>Before Photos</span>
                                                     <div className="family-job-card__photo-row">
-                                                        {(job.beforePhotos as { id: string, url: string, caption: string }[]).map(p => (
-                                                            <img key={p.id} src={p.url} alt={p.caption} title={p.caption} />
+                                                        {job.before_photos?.map((p: any) => (
+                                                            <img key={p.id} src={p.url} alt={p.caption || 'Before'} title={p.caption || 'Before'} />
                                                         ))}
                                                     </div>
                                                 </div>
                                             )}
-                                            {job.afterPhotos.length > 0 && (
+                                            {(job.after_photos?.length || 0) > 0 && (
                                                 <div className="family-job-card__photo-section">
                                                     <span>After Photos</span>
                                                     <div className="family-job-card__photo-row">
-                                                        {(job.afterPhotos as { id: string, url: string, caption: string }[]).map(p => (
-                                                            <img key={p.id} src={p.url} alt={p.caption} title={p.caption} />
+                                                        {job.after_photos?.map((p: any) => (
+                                                            <img key={p.id} src={p.url} alt={p.caption || 'After'} title={p.caption || 'After'} />
                                                         ))}
                                                     </div>
                                                 </div>
@@ -175,7 +180,7 @@ export function FamilyJobTracker() {
                                     {job.status === 'COMPLETED' && (
                                         <div className="family-job-card__completed-banner">
                                             <CheckCircle2 size={16} />
-                                            <span>Job completed on {formatDate(job.completedAt)}</span>
+                                            <span>Job completed on {formatDate(job.completed_at)}</span>
                                         </div>
                                     )}
                                 </div>

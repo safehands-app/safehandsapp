@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, ArrowRight, Info } from 'lucide-react';
+import { Mail, Lock, ArrowRight } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export function Login() {
@@ -11,30 +11,29 @@ export function Login() {
     const [password, setPassword] = useState('password123');
     const [error, setError] = useState('');
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
+        console.log('[Login Component] handleLogin START');
         setError('');
 
-        if (!email) {
-            setError("Email is required");
+        if (!email || !password) {
+            setError('Email and password are required');
             return;
         }
 
         setIsLoading(true);
-
-        // Simulate login delay
-        setTimeout(() => {
+        try {
+            console.log('[Login Component] Awaiting useAuth logic...');
+            await login(email, password);
+            console.log('[Login Component] login resolved, navigating to Root');
+            navigate('/dashboard', { replace: true });
+        } catch (err: unknown) {
+            console.error('[Login Component] Caught error:', err);
+            setError(err instanceof Error ? err.message : 'Invalid email or password');
+        } finally {
+            console.log('[Login Component] Execution finally block');
             setIsLoading(false);
-            try {
-                // Execute mock login with the entered email
-                login(email);
-
-                // Redirect to root, which will automatically route to the correct dashboard via ProtectedRoute
-                navigate('/', { replace: true });
-            } catch (err: any) {
-                setError(err.message || "Failed to login");
-            }
-        }, 1000);
+        }
     };
 
     return (
@@ -87,35 +86,6 @@ export function Login() {
                     {isLoading ? 'Signing in...' : 'Sign In'}
                 </button>
             </form>
-
-            {/* Helper panel since we have no backend yet */}
-            <div style={{ marginTop: '2rem', padding: '1.25rem', backgroundColor: 'rgba(59, 130, 246, 0.05)', border: '1px solid rgba(59, 130, 246, 0.1)', borderRadius: '12px', fontSize: '0.85rem' }}>
-                <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '0 0 0.75rem 0', color: '#3b82f6' }}>
-                    <Info size={16} /> Beta Access Credentials
-                </h4>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '0.5rem', opacity: 0.8 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>Family Portal:</span> <strong>family@safehands.com</strong>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>Super Admin:</span> <strong>admin@safehands.com</strong>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>Tenant Admin:</span> <strong>admin@oakridge.com</strong>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>Field Exec:</span> <strong>field@safehands.com</strong>
-                    </div>
-                    {/* New entry for Vendor Portal */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', color: '#f59e0b' }}>
-                        <span>Vendor:</span> <strong>vendor@acme.com</strong>
-                    </div>
-                    {/* New entry for Supervisor Portal */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', color: '#8b5cf6' }}>
-                        <span>Supervisor:</span> <strong>supervisor@safehands.com</strong>
-                    </div>
-                </div>
-            </div>
 
             <div className="auth-divider">or continue with</div>
 

@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, User, MapPin, AlertTriangle, X, Check } from 'lucide-react';
-import jobData from '../data/jobOrderData.json';
+import { useAuth } from '../context/AuthContext';
+import { useJobs } from '../hooks/useJobs';
+import { assignJob } from '../services/jobService';
+import { getFreeExecutives } from '../services/execService';
+import type { JobWithDetails } from '../lib/database.types';
 import './SupervisorJobQueue.css';
-
-type Job = typeof jobData.jobs[0];
-type FE = typeof jobData.fieldExecutives[0];
 
 const statusColors: Record<string, string> = {
     REQUESTED: '#f59e0b',
@@ -25,31 +26,47 @@ function formatDate(dateStr: string) {
 }
 
 export function SupervisorJobQueue() {
-    const [jobs, setJobs] = useState<Job[]>(jobData.jobs);
+    const { user } = useAuth();
+    // Fetch live jobs for the region
+    const { jobs, loading } = useJobs({ region: user?.region || undefined, realtime: true });
+
     const [search, setSearch] = useState('');
     const [statusFilter, setStatusFilter] = useState('ALL');
-    const [selectedJob, setSelectedJob] = useState<Job | null>(null);
-    const [assignModalJob, setAssignModalJob] = useState<Job | null>(null);
-    const [selectedFE, setSelectedFE] = useState<FE | null>(null);
+    const [selectedJob, setSelectedJob] = useState<JobWithDetails | null>(null);
+    const [assignModalJob, setAssignModalJob] = useState<JobWithDetails | null>(null);
 
-    const freeExecutives = jobData.fieldExecutives.filter(fe => fe.status === 'Free');
+    // Field executives state
+    const [freeExecutives, setFreeExecutives] = useState<any[]>([]);
+    const [selectedFE, setSelectedFE] = useState<any | null>(null);
+    const [isAssigning, setIsAssigning] = useState(false);
+
+    // Fetch free FEs when modal opens
+    useEffect(() => {
+        if (assignModalJob && user?.region) {
+            getFreeExecutives(user.region).then(setFreeExecutives).catch(console.error);
+        }
+    }, [assignModalJob, user?.region]);
 
     const filteredJobs = jobs.filter(j => {
         const matchSearch = j.type.toLowerCase().includes(search.toLowerCase()) ||
-            j.familyName.toLowerCase().includes(search.toLowerCase());
+            (j.family?.name || '').toLowerCase().includes(search.toLowerCase());
         const matchStatus = statusFilter === 'ALL' || j.status === statusFilter;
         return matchSearch && matchStatus;
     });
 
-    const handleAssign = () => {
+    const handleAssign = async () => {
         if (!assignModalJob || !selectedFE) return;
-        setJobs(prev => prev.map(j =>
-            j.id === assignModalJob.id
-                ? { ...j, status: 'ASSIGNED', assignedExecId: selectedFE.id, assignedExecName: selectedFE.name }
-                : j
-        ));
-        setAssignModalJob(null);
-        setSelectedFE(null);
+        setIsAssigning(true);
+        try {
+            await assignJob(assignModalJob.id, selectedFE.profile_id);
+            setAssignModalJob(null);
+            setSelectedFE(null);
+        } catch (err) {
+            console.error('Failed to assign job:', err);
+            alert('Failed to assign job. Please try again.');
+        } finally {
+            setIsAssigning(false);
+        }
     };
 
     const statusOptions = ['ALL', 'REQUESTED', 'ASSIGNED', 'IN_PROGRESS', 'DONE', 'COMPLETED'];
@@ -96,12 +113,12 @@ export function SupervisorJobQueue() {
                             <tr key={job.id} onClick={() => setSelectedJob(job)} className="supervisor-queue__row">
                                 <td>
                                     <span className="supervisor-queue__job-type">{job.type}</span>
-                                    <span className="supervisor-queue__job-id">#{job.id}</span>
+                                    <span className="supervisor-queue__job-id">#{job.id.slice(0, 8)}</span>
                                 </td>
                                 <td>
                                     <div className="supervisor-queue__family">
                                         <MapPin size={12} />
-                                        <span>{job.familyName}</span>
+                                        <span>{job.family?.name || 'Unknown'}</span>
                                     </div>
                                 </td>
                                 <td>
@@ -111,11 +128,11 @@ export function SupervisorJobQueue() {
                                     </span>
                                 </td>
                                 <td className="supervisor-queue__date">
-                                    {job.scheduledAt ? formatDate(job.scheduledAt) : '—'}
+                                    {job.scheduled_at ? formatDate(job.scheduled_at) : '—'}
                                 </td>
                                 <td>
-                                    {job.assignedExecName
-                                        ? <span className="supervisor-queue__exec"><User size={12} />{job.assignedExecName}</span>
+                                    {job.assigned_exec
+                                        ? <span className="supervisor-queue__exec"><User size={12} />{job.assigned_exec.name}</span>
                                         : <span className="supervisor-queue__unassigned">Unassigned</span>
                                     }
                                 </td>
@@ -139,7 +156,8 @@ export function SupervisorJobQueue() {
                         ))}
                     </tbody>
                 </table>
-                {filteredJobs.length === 0 && (
+                {loading && <div style={{ padding: '2rem', textAlign: 'center' }}>Loading jobs...</div>}
+                {!loading && filteredJobs.length === 0 && (
                     <div className="supervisor-empty">No jobs found matching your filters.</div>
                 )}
             </div>
@@ -160,13 +178,13 @@ export function SupervisorJobQueue() {
                         </div>
                         <div className="supervisor-job-detail-panel__body">
                             <div className="supervisor-detail-row">
-                                <span>Family</span><span>{selectedJob.familyName}</span>
+                                <span>Family</span><span>{selectedJob.family?.name || 'Unknown'}</span>
                             </div>
                             <div className="supervisor-detail-row">
-                                <span>Address</span><span>{selectedJob.familyAddress}</span>
+                                <span>Address</span><span>{'Address unavailable'}</span>
                             </div>
                             <div className="supervisor-detail-row">
-                                <span>Assigned To</span><span>{selectedJob.assignedExecName || 'Unassigned'}</span>
+                                <span>Assigned To</span><span>{selectedJob.assigned_exec?.name || 'Unassigned'}</span>
                             </div>
                             <div className="supervisor-detail-row">
                                 <span>Priority</span>
@@ -175,7 +193,7 @@ export function SupervisorJobQueue() {
                                 </span>
                             </div>
                             <div className="supervisor-detail-row">
-                                <span>Requested</span><span>{formatDate(selectedJob.requestedAt)}</span>
+                                <span>Requested</span><span>{formatDate(selectedJob.requested_at)}</span>
                             </div>
                             <div className="supervisor-detail-section">
                                 <span>Description</span>
@@ -205,7 +223,7 @@ export function SupervisorJobQueue() {
                             <h3>Assign Field Executive</h3>
                             <button onClick={() => setAssignModalJob(null)}><X size={18} /></button>
                         </div>
-                        <p className="supervisor-modal__subtitle">Job: <strong>{assignModalJob.type}</strong> for {assignModalJob.familyName}</p>
+                        <p className="supervisor-modal__subtitle">Job: <strong>{assignModalJob.type}</strong> for {assignModalJob.family?.name}</p>
                         <div className="supervisor-modal__fe-list">
                             {freeExecutives.length > 0 ? freeExecutives.map(fe => (
                                 <div
@@ -213,10 +231,10 @@ export function SupervisorJobQueue() {
                                     className={`supervisor-fe-option ${selectedFE?.id === fe.id ? 'selected' : ''}`}
                                     onClick={() => setSelectedFE(fe)}
                                 >
-                                    <div className="supervisor-fe-option__avatar">{fe.name.split(' ').map(n => n[0]).join('')}</div>
+                                    <div className="supervisor-fe-option__avatar">{fe.profile?.name?.split(' ').map((n: string) => n[0]).join('') || 'FE'}</div>
                                     <div>
-                                        <div className="supervisor-fe-option__name">{fe.name}</div>
-                                        <div className="supervisor-fe-option__meta">{fe.region} · ⭐ {fe.rating} · {fe.jobsCompleted} jobs done</div>
+                                        <div className="supervisor-fe-option__name">{fe.profile?.name}</div>
+                                        <div className="supervisor-fe-option__meta">{fe.region} · ⭐ {fe.rating} · {fe.jobs_completed} jobs done</div>
                                     </div>
                                     {selectedFE?.id === fe.id && <Check size={18} className="supervisor-fe-option__check" />}
                                 </div>
@@ -225,9 +243,9 @@ export function SupervisorJobQueue() {
                             )}
                         </div>
                         <div className="supervisor-modal__actions">
-                            <button className="btn-secondary" onClick={() => setAssignModalJob(null)}>Cancel</button>
-                            <button className="btn-primary" onClick={handleAssign} disabled={!selectedFE}>
-                                Confirm Assignment
+                            <button className="btn-secondary" onClick={() => setAssignModalJob(null)} disabled={isAssigning}>Cancel</button>
+                            <button className="btn-primary" onClick={handleAssign} disabled={!selectedFE || isAssigning}>
+                                {isAssigning ? 'Assigning...' : 'Confirm Assignment'}
                             </button>
                         </div>
                     </div>
