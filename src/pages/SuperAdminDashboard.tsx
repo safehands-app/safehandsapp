@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Building2, Users, Activity, IndianRupee, Shield } from 'lucide-react';
+import { Building2, Activity, IndianRupee, Shield } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import './SuperAdminDashboard.css';
 

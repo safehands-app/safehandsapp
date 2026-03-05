@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Search, Building2, Plus, Building } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { useAuth } from '../context/AuthContext';
 import './GenericSubPage.css';
 
 type TenantRow = {
@@ -14,7 +13,6 @@ type TenantRow = {
 };
 
 export function SuperAdminTenants() {
-    const { user } = useAuth();
     const [tenants, setTenants] = useState<TenantRow[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
@@ -23,7 +21,7 @@ export function SuperAdminTenants() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newName, setNewName] = useState('');
     const [newSub, setNewSub] = useState('Standard');
-    const [newStatus, setNewStatus] = useState('Active');
+    const [newStatus] = useState('Active');
     const [newMrr, setNewMrr] = useState('₹1,50,000');
     const [saving, setSaving] = useState(false);
 
