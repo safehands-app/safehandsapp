@@ -63,11 +63,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Listen for auth state changes (login, logout, token refresh)
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
             async (_event, session) => {
-                console.log('[AuthContext] onAuthStateChange event:', _event, 'session:', session?.user?.id);
                 setSession(session);
                 if (session?.user) {
                     try {
-                        console.log('[AuthContext] onAuthStateChange calling loadProfile');
                         await loadProfile(session.user.id);
                     } catch (err) {
                         console.error("Background profile sync failed:", err);
@@ -86,7 +84,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, []);
 
     async function loadProfile(userId: string) {
-        console.log('[AuthContext] loadProfile START for user:', userId);
         const { data, error } = await supabase
             .from('profiles')
             .select('*')
@@ -94,37 +91,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             .single();
 
         if (error) {
-            console.error('[AuthContext] loadProfile error:', error);
+            console.error('Failed to load profile:', error);
             throw new Error(`Database error: ${error.message} (Code: ${error.code})`);
         }
         if (!data) {
-            console.error('[AuthContext] loadProfile no data found');
             throw new Error('Your account profile does not exist in the database. Please contact support.');
         }
 
-        console.log('[AuthContext] loadProfile SUCCESS:', data);
         setUser(profileToUser(data as Profile));
     }
 
     const login = async (email: string, password: string) => {
-        console.log('[AuthContext] login START');
         setLoading(true);
         try {
-            console.log('[AuthContext] Calling supabase.auth.signInWithPassword...');
             const { error } = await supabase.auth.signInWithPassword({ email, password });
-            console.log('[AuthContext] supabase.auth.signInWithPassword returned, error:', error);
             if (error) throw new Error(error.message);
-
-            // We NO LONGER call `loadProfile` explicitly here to avoid the race condition
-            // where `signInWithPassword` and `onAuthStateChange` fight over the LocalStorage lock.
-            // The `onAuthStateChange` subscription defined in the `useEffect` above will automatically 
-            // fire once the sign-in completes, acting as the singular source of truth for fetching the profile.
-            console.log('[AuthContext] login function FINISHED');
         } finally {
-            // we do NOT set loading to false here. We let the onAuthStateChange listener 
-            // (or the component unmounting due to navigation) handle resolving the loading state
-            // to prevent the immediate "bounce back to login page" jitter.
-            console.log('[AuthContext] login finally block');
+            // loading is released by onAuthStateChange after profile is fetched
         }
     };
 
