@@ -8,12 +8,11 @@ export function Login() {
     const { login } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('password123');
+    const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('[Login Component] handleLogin START');
         setError('');
 
         if (!email || !password) {
@@ -23,15 +22,11 @@ export function Login() {
 
         setIsLoading(true);
         try {
-            console.log('[Login Component] Awaiting useAuth logic...');
             await login(email, password);
-            console.log('[Login Component] login resolved, navigating to Root');
             navigate('/dashboard', { replace: true });
         } catch (err: unknown) {
-            console.error('[Login Component] Caught error:', err);
             setError(err instanceof Error ? err.message : 'Invalid email or password');
         } finally {
-            console.log('[Login Component] Execution finally block');
             setIsLoading(false);
         }
     };
