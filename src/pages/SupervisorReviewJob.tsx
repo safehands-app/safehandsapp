@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { CheckCircle2, RotateCcw, X, ZoomIn } from 'lucide-react';
-import jobData from '../data/jobOrderData.json';
+import { useAuth } from '../context/AuthContext';
+import { useJobs } from '../hooks/useJobs';
+import { updateJobStatus } from '../services/jobService';
+import type { JobPhoto } from '../lib/database.types';
 import './SupervisorReviewJob.css';
 
-type Job = typeof jobData.jobs[0];
-type Photo = { id: string; url: string; caption: string };
+type Photo = JobPhoto;
 
 function formatDate(dateStr: string) {
     return new Date(dateStr).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
@@ -28,7 +30,7 @@ function PhotoGallery({ photos, label }: { photos: Photo[]; label: string }) {
             <div className="supervisor-gallery__grid">
                 {photos.map(p => (
                     <div key={p.id} className="supervisor-gallery__thumb" onClick={() => setLightbox(p)}>
-                        <img src={p.url} alt={p.caption} />
+                        <img src={p.url} alt={p.caption || ''} />
                         <div className="supervisor-gallery__thumb-overlay">
                             <ZoomIn size={18} />
                         </div>
@@ -40,7 +42,7 @@ function PhotoGallery({ photos, label }: { photos: Photo[]; label: string }) {
                 <div className="supervisor-lightbox" onClick={() => setLightbox(null)}>
                     <div className="supervisor-lightbox__content" onClick={e => e.stopPropagation()}>
                         <button className="supervisor-lightbox__close" onClick={() => setLightbox(null)}><X size={20} /></button>
-                        <img src={lightbox.url} alt={lightbox.caption} />
+                        <img src={lightbox.url} alt={lightbox.caption || ''} />
                         <p>{lightbox.caption}</p>
                     </div>
                 </div>
@@ -50,11 +52,18 @@ function PhotoGallery({ photos, label }: { photos: Photo[]; label: string }) {
 }
 
 export function SupervisorReviewJob() {
-    const [jobs, setJobs] = useState<Job[]>(jobData.jobs.filter(j => j.status === 'DONE' || j.status === 'COMPLETED'));
+    const { user } = useAuth();
+    const { jobs, loading } = useJobs({ region: user?.region || undefined, realtime: true });
+
     const [selectedIdx, setSelectedIdx] = useState(0);
     const [feedbackText, setFeedbackText] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const reviewJobs = jobs;
+    const reviewJobs = jobs.filter(j => j.status === 'DONE' || j.status === 'COMPLETED');
+
+    if (loading) {
+        return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading review queue...</div>;
+    }
 
     if (reviewJobs.length === 0) {
         return (
@@ -68,21 +77,35 @@ export function SupervisorReviewJob() {
 
     const selectedJob = reviewJobs[selectedIdx];
 
-    const handleComplete = () => {
-        setJobs(prev => prev.map((j, i) =>
-            i === selectedIdx ? { ...j, status: 'COMPLETED' } : j
-        ));
-        if (selectedIdx > 0 && selectedIdx >= jobs.filter(j => j.status === 'DONE').length - 1) {
-            setSelectedIdx(prev => prev - 1);
+    const handleComplete = async () => {
+        if (!selectedJob) return;
+        setIsSubmitting(true);
+        try {
+            await updateJobStatus(selectedJob.id, 'COMPLETED', feedbackText || undefined);
+            if (selectedIdx > 0 && selectedIdx >= reviewJobs.filter(j => j.status === 'DONE').length - 1) {
+                setSelectedIdx(prev => prev - 1);
+            }
+            setFeedbackText('');
+        } catch (error) {
+            console.error('Failed to complete job:', error);
+            alert('Failed to complete job');
+        } finally {
+            setIsSubmitting(false);
         }
-        setFeedbackText('');
     };
 
-    const handleRework = () => {
-        setJobs(prev => prev.map((j, i) =>
-            i === selectedIdx ? { ...j, status: 'IN_PROGRESS' } : j
-        ));
-        setFeedbackText('');
+    const handleRework = async () => {
+        if (!selectedJob) return;
+        setIsSubmitting(true);
+        try {
+            await updateJobStatus(selectedJob.id, 'IN_PROGRESS', feedbackText || undefined);
+            setFeedbackText('');
+        } catch (error) {
+            console.error('Failed to rework job:', error);
+            alert('Failed to Rework job');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -98,7 +121,7 @@ export function SupervisorReviewJob() {
                         >
                             <div>
                                 <span className="supervisor-review__job-type">{job.type}</span>
-                                <span className="supervisor-review__job-family">{job.familyName}</span>
+                                <span className="supervisor-review__job-family">{job.family?.name || 'Unknown'}</span>
                             </div>
                             <span className={`supervisor-review__job-badge ${job.status === 'COMPLETED' ? 'done' : 'pending'}`}>
                                 {job.status === 'COMPLETED' ? '✓ Done' : 'Review'}
@@ -113,11 +136,11 @@ export function SupervisorReviewJob() {
                 <div className="supervisor-review__header">
                     <div>
                         <h2>{selectedJob.type}</h2>
-                        <p>{selectedJob.familyName} · {selectedJob.familyAddress}</p>
+                        <p>{selectedJob.family?.name || 'Unknown'} · {'Address unavailable'}</p>
                     </div>
                     <div className="supervisor-review__header-meta">
-                        <span>FE: {selectedJob.assignedExecName}</span>
-                        <span>Requested: {formatDate(selectedJob.requestedAt)}</span>
+                        <span>FE: {selectedJob.assigned_exec?.name || 'Unassigned'}</span>
+                        <span>Requested: {formatDate(selectedJob.requested_at)}</span>
                     </div>
                 </div>
 
@@ -137,8 +160,8 @@ export function SupervisorReviewJob() {
 
                 {/* Photo Evidence */}
                 <div className="supervisor-review__photos">
-                    <PhotoGallery photos={selectedJob.beforePhotos as Photo[]} label="📷 Before Photos" />
-                    <PhotoGallery photos={selectedJob.afterPhotos as Photo[]} label="✅ After Photos" />
+                    <PhotoGallery photos={(selectedJob.before_photos || []) as Photo[]} label="📷 Before Photos" />
+                    <PhotoGallery photos={(selectedJob.after_photos || []) as Photo[]} label="✅ After Photos" />
                 </div>
 
                 {/* Supervisor Feedback + Actions */}
@@ -152,10 +175,10 @@ export function SupervisorReviewJob() {
                             rows={3}
                         />
                         <div className="supervisor-review__action-btns">
-                            <button className="supervisor-review__rework-btn" onClick={handleRework}>
+                            <button className="supervisor-review__rework-btn" onClick={handleRework} disabled={isSubmitting}>
                                 <RotateCcw size={16} /> Send for Rework
                             </button>
-                            <button className="supervisor-review__complete-btn" onClick={handleComplete}>
+                            <button className="supervisor-review__complete-btn" onClick={handleComplete} disabled={isSubmitting}>
                                 <CheckCircle2 size={16} /> Mark as COMPLETED
                             </button>
                         </div>

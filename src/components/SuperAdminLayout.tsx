@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Home, Users, IndianRupee, ShieldAlert, FileText, Settings, Bell, RefreshCw, Search, Menu, X, Sun, Moon, LogOut } from 'lucide-react';
+import { Home, Users, Database, IndianRupee, ShieldAlert, FileText, Settings, Bell, RefreshCw, Search, Menu, X, Sun, Moon, LogOut } from 'lucide-react';
 import { useTheme } from '../theme-provider';
 import { useAuth } from '../context/AuthContext';
 import './SuperAdminLayout.css';
 
 const navItems = [
     { path: '/super-admin', icon: <Home size={20} />, label: 'Dashboard' },
-    { path: '/super-admin/tenants', icon: <Users size={20} />, label: 'Tenants' },
+    { path: '/super-admin/users', icon: <Users size={20} />, label: 'Global Users' },
+    { path: '/super-admin/tenants', icon: <Database size={20} />, label: 'Tenants' },
     { path: '/super-admin/financials', icon: <IndianRupee size={20} />, label: 'Financials' },
     { path: '/super-admin/security', icon: <ShieldAlert size={20} />, label: 'Security Ops' },
     { path: '/super-admin/logs', icon: <FileText size={20} />, label: 'System Logs' },

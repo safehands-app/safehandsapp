@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Camera, CheckCircle2, Upload, X, ArrowLeft, MapPin, Clock, User, AlertTriangle } from 'lucide-react';
-import jobData from '../data/jobOrderData.json';
+import { useAuth } from '../context/AuthContext';
+import { useJobs } from '../hooks/useJobs';
+import { uploadJobPhoto, updateJobStatus } from '../services/jobService';
 import './FieldExecutiveJobDetail.css';
 
-type Job = typeof jobData.jobs[0];
-type UploadedFile = { id: string; url: string; name: string };
 
 function formatDate(dateStr: string | null) {
     if (!dateStr) return '—';
@@ -15,37 +15,65 @@ function formatDate(dateStr: string | null) {
 export function FieldExecutiveJobDetail() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const { user } = useAuth();
 
-    const jobOriginal = jobData.jobs.find(j => j.id === id) || jobData.jobs[1];
-    const [job, setJob] = useState<Job>({ ...jobOriginal });
-    const [beforeFiles, setBeforeFiles] = useState<UploadedFile[]>([]);
-    const [afterFiles, setAfterFiles] = useState<UploadedFile[]>([]);
-    const [notes, setNotes] = useState(job.notes || '');
+    const { jobs, loading } = useJobs({ execId: user?.id || undefined, realtime: true });
+    // Find the specific job from the fetched list
+    const job = jobs.find(j => j.id === id);
+
+    const [notes, setNotes] = useState('');
     const [showSuccess, setShowSuccess] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [activeTab, setActiveTab] = useState<'before' | 'after'>('before');
+
+    // Update notes when job loads
+    useEffect(() => {
+        if (job?.notes && !notes) setNotes(job.notes);
+    }, [job?.notes]);
+
+    if (loading) return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading job details...</div>;
+    if (!job) return <div style={{ padding: '2rem', textAlign: 'center' }}>Job not found or unauthorized.</div>;
+
+    const beforeFiles = job.before_photos || [];
+    const afterFiles = job.after_photos || [];
 
     const canMarkDone = afterFiles.length > 0 && job.status === 'IN_PROGRESS';
 
-    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>, type: 'before' | 'after') => {
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'before' | 'after') => {
         const files = Array.from(e.target.files || []);
-        const newUploads: UploadedFile[] = files.map(f => ({
-            id: `u-${Date.now()}-${Math.random()}`,
-            url: URL.createObjectURL(f),
-            name: f.name,
-        }));
-        if (type === 'before') setBeforeFiles(prev => [...prev, ...newUploads]);
-        else setAfterFiles(prev => [...prev, ...newUploads]);
+        if (!files.length) return;
+
+        setIsUploading(true);
+        try {
+            for (const file of files) {
+                await uploadJobPhoto(job.id, type, file);
+            }
+        } catch (err) {
+            console.error('Upload failed:', err);
+            alert('Failed to upload some photos. Please try again.');
+        } finally {
+            setIsUploading(false);
+        }
     };
 
-    const removeFile = (id: string, type: 'before' | 'after') => {
-        if (type === 'before') setBeforeFiles(prev => prev.filter(f => f.id !== id));
-        else setAfterFiles(prev => prev.filter(f => f.id !== id));
+    const removeFile = (fileId: string, photoType: 'before' | 'after') => {
+        // In a real app we would call a delete photo service here.
+        alert(`Photo deletion requires an API endpoint. Feature coming soon. (${fileId}, ${photoType})`);
     };
 
-    const handleMarkDone = () => {
-        setJob(prev => ({ ...prev, status: 'DONE' }));
-        setShowSuccess(true);
-        setTimeout(() => setShowSuccess(false), 3000);
+    const handleMarkDone = async () => {
+        setIsSubmitting(true);
+        try {
+            await updateJobStatus(job.id, 'DONE', notes);
+            setShowSuccess(true);
+            setTimeout(() => { setShowSuccess(false); navigate('/field-exec'); }, 3000);
+        } catch (err) {
+            console.error('Failed to mark done:', err);
+            alert('Failed to mark job as done. Try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -81,21 +109,21 @@ export function FieldExecutiveJobDetail() {
                     <User size={16} />
                     <div>
                         <span className="fe-job-detail__info-label">Client</span>
-                        <span className="fe-job-detail__info-value">{job.familyName}</span>
+                        <span className="fe-job-detail__info-value">{job.family?.name || 'Unknown'}</span>
                     </div>
                 </div>
                 <div className="fe-job-detail__info-card">
                     <MapPin size={16} />
                     <div>
                         <span className="fe-job-detail__info-label">Location</span>
-                        <span className="fe-job-detail__info-value">{job.familyAddress}</span>
+                        <span className="fe-job-detail__info-value">{'Address unavailable'}</span>
                     </div>
                 </div>
                 <div className="fe-job-detail__info-card">
                     <Clock size={16} />
                     <div>
                         <span className="fe-job-detail__info-label">Scheduled</span>
-                        <span className="fe-job-detail__info-value">{formatDate(job.scheduledAt)}</span>
+                        <span className="fe-job-detail__info-value">{formatDate(job.scheduled_at)}</span>
                     </div>
                 </div>
             </div>
@@ -136,13 +164,14 @@ export function FieldExecutiveJobDetail() {
                         style={{ display: 'none' }}
                     />
                 </label>
+                {isUploading && <div style={{ textAlign: 'center', margin: '1rem', color: '#3b82f6' }}>Uploading photos...</div>}
 
                 {/* Uploaded Files Preview */}
                 {(activeTab === 'before' ? beforeFiles : afterFiles).length > 0 && (
                     <div className="fe-job-detail__uploads-grid">
-                        {(activeTab === 'before' ? beforeFiles : afterFiles).map(f => (
+                        {(activeTab === 'before' ? beforeFiles : afterFiles).map((f: any) => (
                             <div key={f.id} className="fe-job-detail__uploaded-item">
-                                <img src={f.url} alt={f.name} />
+                                <img src={f.url} alt={f.caption || 'Upload'} />
                                 <button
                                     className="fe-job-detail__remove-btn"
                                     onClick={() => removeFile(f.id, activeTab)}
@@ -150,7 +179,7 @@ export function FieldExecutiveJobDetail() {
                                 >
                                     <X size={12} />
                                 </button>
-                                <span className="fe-job-detail__uploaded-name">{f.name}</span>
+                                <span className="fe-job-detail__uploaded-name">{f.caption || 'Photo'}</span>
                             </div>
                         ))}
                         <label className="fe-job-detail__add-more">
@@ -192,9 +221,9 @@ export function FieldExecutiveJobDetail() {
                     <button
                         className="fe-job-detail__done-btn"
                         onClick={handleMarkDone}
-                        disabled={!canMarkDone}
+                        disabled={!canMarkDone || isSubmitting}
                     >
-                        <CheckCircle2 size={20} /> Mark Job as DONE
+                        <CheckCircle2 size={20} /> {isSubmitting ? 'Submitting...' : 'Mark Job as DONE'}
                     </button>
                 </div>
             )}

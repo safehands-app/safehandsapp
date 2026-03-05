@@ -9,10 +9,14 @@ import { ForgotPassword } from './pages/auth/ForgotPassword'
 import { FamilyLayout } from './components/FamilyLayout'
 import { FamilyDashboard } from './pages/FamilyDashboard'
 import { FamilyJobTracker } from './pages/FamilyJobTracker'
+import { SuperAdminTenants } from './pages/SuperAdminTenants'
+import { SuperAdminGlobalUsers } from './pages/SuperAdminGlobalUsers'
 import { SuperAdminLayout } from './components/SuperAdminLayout'
 import { SuperAdminDashboard } from './pages/SuperAdminDashboard'
 import { TenantAdminLayout } from './components/TenantAdminLayout'
 import { TenantAdminDashboard } from './pages/TenantAdminDashboard'
+import { TenantAdminFamilies } from './pages/TenantAdminFamilies'
+import { TenantAdminExecutives } from './pages/TenantAdminExecutives'
 import { FieldExecutiveLayout } from './components/FieldExecutiveLayout'
 import { FieldExecutiveDashboard } from './pages/FieldExecutiveDashboard'
 import { FieldExecutiveSchedule } from './pages/FieldExecutiveSchedule'
@@ -35,7 +39,11 @@ import { LandingPage } from './pages/LandingPage'
 
 // Component to handle root redirect based on authentication
 function RootRedirect() {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, loading } = useAuth();
+
+  if (loading) {
+    return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', color: '#64748b' }}>Verifying session...</div>;
+  }
 
   if (!isAuthenticated || !user) {
     return <Navigate to="/auth/login" replace />;
@@ -91,7 +99,8 @@ function App() {
           <Route element={<ProtectedRoute allowedRoles={['super-admin']} />}>
             <Route element={<SuperAdminLayout />}>
               <Route path="/super-admin" element={<SuperAdminDashboard />} />
-              <Route path="/super-admin/tenants" element={<GenericSubPage title="Manage Tenants" description="Add, remove, or modify tenant subscriptions and billing." columns={['Tenant Name', 'Plan', 'Active Users', 'MRR', 'Status']} />} />
+              <Route path="/super-admin/users" element={<SuperAdminGlobalUsers />} />
+              <Route path="/super-admin/tenants" element={<SuperAdminTenants />} />
               <Route path="/super-admin/financials" element={<GenericSubPage title="Financials & Billing" description="Global revenue tracking and invoice management." columns={['Invoice ID', 'Tenant', 'Amount', 'Date', 'Payment Status']} />} />
               <Route path="/super-admin/security" element={<GenericSubPage title="Security Operations" description="Global incident response and safety alerts." columns={['Incident ID', 'Location', 'Severity', 'Time Reported', 'Status']} />} />
               <Route path="/super-admin/logs" element={<GenericSubPage title="System Logs" description="Audit trails for administrative and automated actions." columns={['Timestamp', 'User/System', 'Action', 'Resource', 'Result']} />} />
@@ -103,8 +112,8 @@ function App() {
           <Route element={<ProtectedRoute allowedRoles={['tenant-admin']} />}>
             <Route element={<TenantAdminLayout />}>
               <Route path="/tenant-admin" element={<TenantAdminDashboard />} />
-              <Route path="/tenant-admin/families" element={<GenericSubPage title="Enrolled Families" description="Detailed list of all families managed by this tenant." columns={['Family ID', 'Primary Contact', 'Phone', 'Plan', 'Status']} />} />
-              <Route path="/tenant-admin/executives" element={<GenericSubPage title="Field Executives" description="Manage your nurses, guards, and service personnel." columns={['Employee ID', 'Name', 'Role', 'Current Assignment', 'Status']} />} />
+              <Route path="/tenant-admin/families" element={<TenantAdminFamilies />} />
+              <Route path="/tenant-admin/executives" element={<TenantAdminExecutives />} />
               <Route path="/tenant-admin/reports" element={<GenericSubPage title="Service Reports" description="Internal review of all submitted field service reports." columns={['Report ID', 'Family', 'Executive', 'Date', 'Quality Score']} />} />
               <Route path="/tenant-admin/settings" element={<GenericSubPage title="Portal Settings" description="Configure tenant-specific branding and preferences." columns={['Configuration', 'Value', 'Last Updated', 'Status']} />} />
             </Route>
