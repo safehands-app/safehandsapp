@@ -30,6 +30,7 @@ export function SuperAdminTenants() {
             const { data, error } = await supabase
                 .from('tenants')
                 .select('*')
+                .is('deleted_at', null) // Filter out soft-deleted tenants
                 .order('created_at', { ascending: false });
 
             if (error) throw error;
@@ -69,6 +70,25 @@ export function SuperAdminTenants() {
             alert('Failed to create tenant.');
         } finally {
             setSaving(false);
+        }
+    };
+
+    const handleDeleteTenant = async (id: string, name: string) => {
+        if (!window.confirm(`Are you sure you want to delete the tenant "${name}"? This action will suspend access to all their users.`)) return;
+
+        try {
+            const { error } = await supabase
+                .from('tenants')
+                .update({ deleted_at: new Date().toISOString(), status: 'Inactive' })
+                .eq('id', id);
+
+            if (error) throw error;
+
+            // Remove from local list
+            setTenants(tenants.filter(t => t.id !== id));
+        } catch (err) {
+            console.error('Failed to delete tenant:', err);
+            alert('Failed to delete tenant.');
         }
     };
 
@@ -155,9 +175,17 @@ export function SuperAdminTenants() {
                                             {new Date(t.created_at).toLocaleDateString()}
                                         </td>
                                         <td>
-                                            <button className="gsp-btn-outline" style={{ padding: '4px 12px', fontSize: '0.8rem' }}>
-                                                Manage
-                                            </button>
+                                            <div style={{ display: 'flex', gap: '8px' }}>
+                                                <button className="gsp-btn-outline" style={{ padding: '4px 12px', fontSize: '0.8rem' }}>
+                                                    Manage
+                                                </button>
+                                                <button
+                                                    className="gsp-btn-outline"
+                                                    onClick={() => handleDeleteTenant(t.id, t.name)}
+                                                    style={{ padding: '4px 12px', fontSize: '0.8rem', color: '#ef4444', borderColor: '#ef4444' }}>
+                                                    Delete
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}

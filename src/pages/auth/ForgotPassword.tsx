@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, ArrowLeft, CheckCircle, Info } from 'lucide-react';
+import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
 
 export function ForgotPassword() {
     const [isLoading, setIsLoading] = useState(false);
@@ -57,30 +57,7 @@ export function ForgotPassword() {
                 </button>
             </form>
 
-            {/* Helper panel since we have no backend yet */}
-            <div style={{ marginTop: '2rem', padding: '1.25rem', backgroundColor: 'rgba(59, 130, 246, 0.05)', border: '1px solid rgba(59, 130, 246, 0.1)', borderRadius: '12px', fontSize: '0.85rem' }}>
-                <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: '0 0 0.75rem 0', color: '#3b82f6' }}>
-                    <Info size={16} /> Beta Access Credentials
-                </h4>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '0.5rem', opacity: 0.8 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>Family Portal:</span> <strong>family@safehands.com</strong>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>Super Admin:</span> <strong>admin@safehands.com</strong>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>Tenant Admin:</span> <strong>admin@oakridge.com</strong>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <span>Field Exec:</span> <strong>field@safehands.com</strong>
-                    </div>
-                    {/* New entry for Vendor Portal */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', color: '#f59e0b' }}>
-                        <span>Vendor:</span> <strong>vendor@acme.com</strong>
-                    </div>
-                </div>
-            </div>
+
         </div>
     );
 }

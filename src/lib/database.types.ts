@@ -28,6 +28,8 @@ export interface Database {
                     region: string | null;
                     tenant_id: string | null;
                     avatar_url: string | null;
+                    is_active: boolean | null;
+                    deleted_at: string | null;
                     created_at: string;
                     updated_at: string;
                 };
@@ -39,6 +41,8 @@ export interface Database {
                     region?: string | null;
                     tenant_id?: string | null;
                     avatar_url?: string | null;
+                    is_active?: boolean | null;
+                    deleted_at?: string | null;
                     created_at?: string;
                     updated_at?: string;
                 };
@@ -50,6 +54,8 @@ export interface Database {
                     region?: string | null;
                     tenant_id?: string | null;
                     avatar_url?: string | null;
+                    is_active?: boolean | null;
+                    deleted_at?: string | null;
                     created_at?: string;
                     updated_at?: string;
                 };
@@ -64,6 +70,7 @@ export interface Database {
                     status: string;
                     subscription: string;
                     mrr: string | null;
+                    deleted_at: string | null;
                     created_at: string;
                     updated_at: string;
                 };
@@ -76,6 +83,7 @@ export interface Database {
                     status?: string;
                     subscription?: string;
                     mrr?: string | null;
+                    deleted_at?: string | null;
                     created_at?: string;
                     updated_at?: string;
                 };
@@ -88,6 +96,7 @@ export interface Database {
                     status?: string;
                     subscription?: string;
                     mrr?: string | null;
+                    deleted_at?: string | null;
                     created_at?: string;
                     updated_at?: string;
                 };
