@@ -12,6 +12,7 @@ interface User {
     role: Role;
     name: string;
     region: string | null;
+    tenant_id: string | null;
     initials: string;
 }
 
@@ -40,6 +41,7 @@ function profileToUser(profile: Profile): User {
         role: profile.role,
         name: profile.name,
         region: profile.region,
+        tenant_id: profile.tenant_id,
         initials: makeInitials(profile.name),
     };
 }

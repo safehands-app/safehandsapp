@@ -176,82 +176,72 @@ export function SuperAdminTenants() {
 
             {/* Add Tenant Modal */}
             {isModalOpen && (
-                <div style={{
-                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-                    backgroundColor: 'rgba(15, 23, 42, 0.5)', zIndex: 1000,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center'
-                }}>
-                    <div style={{
-                        backgroundColor: '#fff', borderRadius: '12px', width: '400px',
-                        padding: '1.5rem', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
-                    }}>
-                        <h3 style={{ margin: '0 0 1rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#0f172a' }}>
-                            <Building size={20} color="#3b82f6" /> Provision New Tenant
-                        </h3>
-                        <p style={{ margin: '0 0 1.5rem 0', color: '#64748b', fontSize: '0.9rem' }}>
-                            Create a new isolated SaaS workspace down to the database row level.
-                        </p>
-
-                        <div style={{ marginBottom: '1rem' }}>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', fontWeight: 600, color: '#334155' }}>
-                                Company Name
-                            </label>
-                            <input
-                                type="text"
-                                value={newName}
-                                onChange={(e) => setNewName(e.target.value)}
-                                placeholder="e.g. CareTech Boston"
-                                style={{ width: '92%', padding: '0.75rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}
-                            />
+                <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
+                    <div className="modal-content" onClick={e => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <h3>
+                                <Building size={20} color="var(--primary-color)" style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
+                                Provision New Tenant
+                            </h3>
+                            <button className="icon-btn" onClick={() => setIsModalOpen(false)}>✕</button>
                         </div>
 
-                        <div style={{ marginBottom: '1rem' }}>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', fontWeight: 600, color: '#334155' }}>
-                                Subscription Tier
-                            </label>
-                            <select
-                                value={newSub}
-                                onChange={(e) => setNewSub(e.target.value)}
-                                style={{ width: '100%', padding: '0.75rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}
-                            >
-                                <option value="Basic">Basic</option>
-                                <option value="Standard">Standard</option>
-                                <option value="Premium">Premium</option>
-                                <option value="Custom Enterprise">Custom Enterprise</option>
-                            </select>
-                        </div>
+                        <div className="modal-body">
+                            <p style={{ margin: '0 0 1.25rem', fontSize: '0.875rem', color: 'var(--text-color)', opacity: 0.6 }}>
+                                Create a new isolated SaaS workspace down to the database row level.
+                            </p>
 
-                        <div style={{ marginBottom: '1.5rem' }}>
-                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', fontWeight: 600, color: '#334155' }}>
-                                Estimated MRR
-                            </label>
-                            <input
-                                type="text"
-                                value={newMrr}
-                                onChange={(e) => setNewMrr(e.target.value)}
-                                placeholder="₹1,50,000"
-                                style={{ width: '92%', padding: '0.75rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}
-                            />
-                        </div>
+                            <div className="form-group">
+                                <label>Company Name</label>
+                                <input
+                                    type="text"
+                                    value={newName}
+                                    onChange={(e) => setNewName(e.target.value)}
+                                    placeholder="e.g. CareTech Boston"
+                                />
+                            </div>
 
-                        <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
-                            <button
-                                onClick={() => setIsModalOpen(false)}
-                                style={{ flex: 1, padding: '0.75rem', backgroundColor: '#f1f5f9', color: '#475569', border: 'none', borderRadius: '8px', fontWeight: 600, cursor: 'pointer' }}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={handleAddTenant}
-                                disabled={saving || !newName.trim()}
-                                style={{ flex: 1, padding: '0.75rem', backgroundColor: '#3b82f6', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 600, cursor: 'pointer', opacity: (!newName.trim() || saving) ? 0.5 : 1 }}
-                            >
-                                {saving ? 'Provisioning...' : 'Create Tenant'}
-                            </button>
+                            <div className="form-group">
+                                <label>Subscription Tier</label>
+                                <select value={newSub} onChange={(e) => setNewSub(e.target.value)}>
+                                    <option value="Basic">Basic</option>
+                                    <option value="Standard">Standard</option>
+                                    <option value="Premium">Premium</option>
+                                    <option value="Custom Enterprise">Custom Enterprise</option>
+                                </select>
+                            </div>
+
+                            <div className="form-group">
+                                <label>Estimated MRR</label>
+                                <input
+                                    type="text"
+                                    value={newMrr}
+                                    onChange={(e) => setNewMrr(e.target.value)}
+                                    placeholder="₹1,50,000"
+                                />
+                            </div>
+
+                            <div className="modal-actions">
+                                <button
+                                    className="action-btn secondary"
+                                    onClick={() => setIsModalOpen(false)}
+                                    disabled={saving}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    className="action-btn primary"
+                                    onClick={handleAddTenant}
+                                    disabled={saving || !newName.trim()}
+                                >
+                                    {saving ? 'Provisioning…' : 'Create Tenant'}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             )}
+
         </div>
     );
 }

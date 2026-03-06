@@ -9,6 +9,8 @@ import { ForgotPassword } from './pages/auth/ForgotPassword'
 import { FamilyLayout } from './components/FamilyLayout'
 import { FamilyDashboard } from './pages/FamilyDashboard'
 import { FamilyJobTracker } from './pages/FamilyJobTracker'
+import { FamilyHomes } from './pages/FamilyHomes'
+import { FamilyWellbeing } from './pages/FamilyWellbeing'
 import { SuperAdminTenants } from './pages/SuperAdminTenants'
 import { SuperAdminGlobalUsers } from './pages/SuperAdminGlobalUsers'
 import { SuperAdminLayout } from './components/SuperAdminLayout'
@@ -17,12 +19,17 @@ import { TenantAdminLayout } from './components/TenantAdminLayout'
 import { TenantAdminDashboard } from './pages/TenantAdminDashboard'
 import { TenantAdminFamilies } from './pages/TenantAdminFamilies'
 import { TenantAdminExecutives } from './pages/TenantAdminExecutives'
+import { TenantAdminHomes } from './pages/TenantAdminHomes'
+import { TenantAdminVendors } from './pages/TenantAdminVendors'
+import { TenantAdminSettings } from './pages/TenantAdminSettings'
 import { FieldExecutiveLayout } from './components/FieldExecutiveLayout'
 import { FieldExecutiveDashboard } from './pages/FieldExecutiveDashboard'
 import { FieldExecutiveSchedule } from './pages/FieldExecutiveSchedule'
 import { FieldExecutivePatientContext } from './pages/FieldExecutivePatientContext'
 import { FieldExecutiveServiceReport } from './pages/FieldExecutiveServiceReport'
 import { FieldExecutiveJobDetail } from './pages/FieldExecutiveJobDetail'
+import { FieldExecutiveHomeVisit } from './pages/FieldExecutiveHomeVisit'
+import { FieldExecutiveWellbeingCheck } from './pages/FieldExecutiveWellbeingCheck'
 import { VendorLayout } from './components/VendorLayout'
 import { VendorDashboard } from './pages/VendorDashboard'
 import { VendorTickets } from './pages/VendorTickets'
@@ -89,6 +96,8 @@ function App() {
             <Route element={<FamilyLayout />}>
               <Route path="/family" element={<FamilyDashboard />} />
               <Route path="/family/jobs" element={<FamilyJobTracker />} />
+              <Route path="/family/homes" element={<FamilyHomes />} />
+              <Route path="/family/wellbeing" element={<FamilyWellbeing />} />
               <Route path="/family/reports" element={<GenericSubPage title="Service Reports" description="View and download historical care reports." columns={['Date', 'Caregiver', 'Duration', 'Status']} />} />
               <Route path="/family/schedule" element={<GenericSubPage title="Upcoming Schedule" description="Manage your assigned nursing and maintenance visits." columns={['Date & Time', 'Service Type', 'Assigned To', 'Status']} />} />
               <Route path="/family/members" element={<GenericSubPage title="Family Members" description="Manage access and profiles for your household." columns={['Name', 'Role', 'Phone', 'Access Level']} />} />
@@ -114,8 +123,10 @@ function App() {
               <Route path="/tenant-admin" element={<TenantAdminDashboard />} />
               <Route path="/tenant-admin/families" element={<TenantAdminFamilies />} />
               <Route path="/tenant-admin/executives" element={<TenantAdminExecutives />} />
+              <Route path="/tenant-admin/homes" element={<TenantAdminHomes />} />
+              <Route path="/tenant-admin/vendors" element={<TenantAdminVendors />} />
+              <Route path="/tenant-admin/settings" element={<TenantAdminSettings />} />
               <Route path="/tenant-admin/reports" element={<GenericSubPage title="Service Reports" description="Internal review of all submitted field service reports." columns={['Report ID', 'Family', 'Executive', 'Date', 'Quality Score']} />} />
-              <Route path="/tenant-admin/settings" element={<GenericSubPage title="Portal Settings" description="Configure tenant-specific branding and preferences." columns={['Configuration', 'Value', 'Last Updated', 'Status']} />} />
             </Route>
           </Route>
 
@@ -127,6 +138,8 @@ function App() {
               <Route path="/field-exec/patient/:id" element={<FieldExecutivePatientContext />} />
               <Route path="/field-exec/report/:id" element={<FieldExecutiveServiceReport />} />
               <Route path="/field-exec/job/:id" element={<FieldExecutiveJobDetail />} />
+              <Route path="/field-exec/home-visit" element={<FieldExecutiveHomeVisit />} />
+              <Route path="/field-exec/wellbeing" element={<FieldExecutiveWellbeingCheck />} />
               <Route path="/field-exec/visits" element={<GenericSubPage title="Visit History" description="Log of all completed service visits and submitted reports." columns={['Visit ID', 'Client', 'Date', 'Time Spent', 'Status']} />} />
               <Route path="/field-exec/profile" element={<GenericSubPage title="My Profile" description="Manage your employee details, certifications, and availability." columns={['Certification', 'Valid Until', 'Status', 'Actions']} />} />
             </Route>
