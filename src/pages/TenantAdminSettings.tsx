@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { getTenantSettings, upsertTenantSettings, uploadTenantLogo } from '../services/tenantSettingsService';
-import type { TenantSettings } from '../lib/database.types';
 import './TenantAdminSettings.css';
 
 export function TenantAdminSettings() {
     const { user } = useAuth();
-    const [, setSettings] = useState<TenantSettings | null>(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -33,7 +31,6 @@ export function TenantAdminSettings() {
             setLoading(true);
             const data = await getTenantSettings(tenantId);
             if (data) {
-                setSettings(data);
                 setForm({
                     platform_name: data.platform_name,
                     primary_color: data.primary_color,

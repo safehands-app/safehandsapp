@@ -322,13 +322,15 @@ export function SuperAdminGlobalUsers() {
                                                     <div style={{ display: 'flex', gap: '0.5rem' }}>
                                                         <button
                                                             onClick={() => handleSaveEdit(u.id)}
-                                                            style={{ padding: '4px', background: '#10b981', color: 'white', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>
-                                                            <Check size={16} />
+                                                            className="gsp-btn-outline"
+                                                            style={{ padding: '4px 12px', fontSize: '0.8rem', color: '#10b981', borderColor: '#10b981' }}>
+                                                            <Check size={14} style={{ marginRight: '4px' }} /> Save
                                                         </button>
                                                         <button
                                                             onClick={() => setEditingUserId(null)}
-                                                            style={{ padding: '4px', background: '#ef4444', color: 'white', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>
-                                                            <X size={16} />
+                                                            className="gsp-btn-outline"
+                                                            style={{ padding: '4px 12px', fontSize: '0.8rem', color: '#64748b', borderColor: '#cbd5e1' }}>
+                                                            <X size={14} style={{ marginRight: '4px' }} /> Cancel
                                                         </button>
                                                     </div>
                                                 ) : (
