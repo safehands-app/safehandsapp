@@ -116,7 +116,11 @@ export function SuperAdminLayout() {
                                         Account Settings
                                     </div>
                                     <button
-                                        onClick={logout}
+                                        onClick={async (e) => {
+                                            e.stopPropagation();
+                                            await logout();
+                                            window.location.href = '/#/auth/login';
+                                        }}
                                         style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem', color: '#ef4444', backgroundColor: 'transparent', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem', textAlign: 'left', transition: 'background-color 0.2s' }}
                                         onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.1)'}
                                         onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}

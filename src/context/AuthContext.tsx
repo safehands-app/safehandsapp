@@ -57,7 +57,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         supabase.auth.getSession().then(async ({ data: { session } }) => {
             setSession(session);
             if (session?.user) {
-                await loadProfile(session.user.id);
+                try {
+                    await loadProfile(session.user.id);
+                } catch (err) {
+                    console.error("Failed to load profile on mount:", err);
+                    setUser(null);
+                }
             }
             setLoading(false);
         });

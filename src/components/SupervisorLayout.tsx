@@ -17,9 +17,10 @@ export function SupervisorLayout() {
 
     const regions = ['Mumbai North', 'Mumbai South', 'Mumbai Central', 'Pune', 'Nashik'];
 
-    const handleLogout = () => {
-        logout();
-        navigate('/');
+    const handleLogout = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        await logout();
+        window.location.href = '/#/auth/login';
     };
 
     const toggleTheme = () => {
