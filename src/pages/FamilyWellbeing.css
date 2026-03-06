@@ -1,0 +1,195 @@
+.family-wellbeing {
+    padding: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.family-wellbeing__header {
+    margin-bottom: 2rem;
+}
+
+.family-wellbeing__header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+}
+
+.family-wellbeing__header p {
+    color: var(--text-secondary, #64748b);
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.wellbeing-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+}
+
+.wellbeing-card {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: 14px;
+    border-left: 4px solid transparent;
+}
+
+.wellbeing-card.status--ok {
+    border-left-color: #22c55e;
+}
+
+.wellbeing-card.status--warn {
+    border-left-color: #f59e0b;
+}
+
+.wellbeing-card.status--emergency {
+    border-left-color: #ef4444;
+}
+
+.wellbeing-card.status--unknown {
+    border-left-color: #94a3b8;
+}
+
+.wellbeing-card__icon {
+    font-size: 2.5rem;
+    line-height: 1;
+}
+
+.wellbeing-card__info h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 0.2rem;
+}
+
+.wellbeing-card__city {
+    font-size: 0.825rem;
+    color: var(--text-secondary, #64748b);
+    margin: 0 0 0.5rem;
+}
+
+.wellbeing-card__status {
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.wellbeing-card__date {
+    font-size: 0.775rem;
+    color: var(--text-muted, #94a3b8);
+    margin: 0.35rem 0 0;
+}
+
+.wellbeing-history h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.history-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+}
+
+.history-item__icon {
+    font-size: 1.5rem;
+    padding-top: 0.1rem;
+}
+
+.history-item__info {
+    flex: 1;
+}
+
+.history-item__address {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin: 0 0 0.2rem;
+}
+
+.history-item__sub {
+    font-size: 0.8rem;
+    color: var(--text-secondary, #64748b);
+    margin: 0;
+}
+
+.history-item__notes {
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--text-secondary, #64748b);
+    margin: 0.4rem 0 0;
+}
+
+.badge-wb {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.badge-wb.status--ok {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.badge-wb.status--warn {
+    background: #fef9c3;
+    color: #854d0e;
+}
+
+.badge-wb.status--emergency {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.badge-wb.status--unknown {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+/* shared */
+.card {
+    background: var(--surface, #fff);
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 12px;
+}
+
+.alert-error {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    border-radius: 8px;
+    color: #dc2626;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.loading-state,
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-secondary, #64748b);
+}
+
+.empty-state span {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.empty-state small {
+    font-size: 0.8rem;
+}
+
+.empty-state.small {
+    padding: 2rem;
+}

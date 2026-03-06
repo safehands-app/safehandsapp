@@ -1,0 +1,231 @@
+.fe-visit {
+    padding: 2rem;
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.fe-visit__header {
+    margin-bottom: 2rem;
+}
+
+.fe-visit__header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0.5rem 0 0.25rem;
+}
+
+.fe-visit__header p {
+    color: var(--text-secondary, #64748b);
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.btn-back {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary, #64748b);
+    cursor: pointer;
+    font-size: 0.875rem;
+    padding: 0;
+    margin-bottom: 0.5rem;
+}
+
+.btn-back:hover {
+    color: var(--text-primary, #0f172a);
+}
+
+.visit-form {
+    padding: 2rem;
+}
+
+.form-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-section label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary, #64748b);
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-section select,
+.form-section textarea {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    background: var(--surface, #fff);
+    color: var(--text-primary, #0f172a);
+}
+
+.form-section select:focus,
+.form-section textarea:focus {
+    outline: none;
+    border-color: var(--primary, #2563eb);
+}
+
+.form-section textarea {
+    resize: vertical;
+}
+
+.photo-section {
+    border-top: 1px solid var(--border, #e2e8f0);
+    padding-top: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.photo-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+}
+
+.hint {
+    font-size: 0.825rem;
+    color: var(--text-secondary, #64748b);
+    margin: 0 0 1rem;
+}
+
+.photo-upload-btn {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border: 2px dashed var(--border, #cbd5e1);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary, #64748b);
+    transition: all 0.15s;
+    margin-bottom: 1rem;
+}
+
+.photo-upload-btn:hover {
+    border-color: var(--primary, #2563eb);
+    color: var(--primary, #2563eb);
+    background: #eff6ff;
+}
+
+.photo-upload-btn input {
+    display: none;
+}
+
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.75rem;
+}
+
+.photo-thumb {
+    position: relative;
+}
+
+.photo-thumb img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--border, #e2e8f0);
+}
+
+.photo-remove {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.photo-remove:hover {
+    background: #ef4444;
+}
+
+.form-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+.btn-primary {
+    padding: 0.55rem 1.25rem;
+    background: var(--primary, #2563eb);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    padding: 0.55rem 1.25rem;
+    background: transparent;
+    color: var(--text-secondary, #64748b);
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.card {
+    background: var(--surface, #fff);
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 12px;
+}
+
+.alert-error {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    border-radius: 8px;
+    color: #dc2626;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.alert-success {
+    padding: 0.75rem 1rem;
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    border-radius: 8px;
+    color: #15803d;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.loading-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-secondary, #64748b);
+}

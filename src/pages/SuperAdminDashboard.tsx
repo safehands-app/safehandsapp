@@ -25,7 +25,8 @@ export function SuperAdminDashboard() {
                     supabase.from('tenants').select('*', { count: 'exact', head: true }),
                     supabase.from('tenants').select('mrr'),
                     supabase.from('profiles').select('*', { count: 'exact', head: true }),
-                    supabase.from('field_executives').select('*', { count: 'exact', head: true }),
+                    // ✅ Field executives are profiles with role='field-executive', not a separate table
+                    supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'field-executive'),
                     supabase.from('tenants').select('*').order('created_at', { ascending: false }).limit(5)
                 ]);
 
@@ -57,6 +58,7 @@ export function SuperAdminDashboard() {
 
         fetchDashboardData();
     }, []);
+
 
     if (loading) {
         return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading Super Admin Dashboard...</div>;
