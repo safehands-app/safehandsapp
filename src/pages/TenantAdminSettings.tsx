@@ -6,7 +6,7 @@ import './TenantAdminSettings.css';
 
 export function TenantAdminSettings() {
     const { user } = useAuth();
-    const [settings, setSettings] = useState<TenantSettings | null>(null);
+    const [, setSettings] = useState<TenantSettings | null>(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);

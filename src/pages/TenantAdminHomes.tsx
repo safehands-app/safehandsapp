@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getHomes, createHome, deleteHome } from '../services/homeService';
-import { getVendors } from '../services/vendorService';
-import type { Home, Vendor } from '../lib/database.types';
+import type { Home } from '../lib/database.types';
 import { useAuth } from '../context/AuthContext';
 import './TenantAdminHomes.css';
 

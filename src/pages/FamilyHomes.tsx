@@ -7,7 +7,7 @@ import { useAuth } from '../context/AuthContext';
 import './FamilyHomes.css';
 
 export function FamilyHomes() {
-    const { user } = useAuth();
+    useAuth();
     const [homes, setHomes] = useState<Home[]>([]);
     const [selectedHome, setSelectedHome] = useState<Home | null>(null);
     const [visits, setVisits] = useState<HomeVisitWithDetails[]>([]);
