@@ -13,6 +13,7 @@ export function Login() {
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
+        console.log('[Login] handleLogin started');
         setError('');
 
         if (!email || !password) {
@@ -22,11 +23,15 @@ export function Login() {
 
         setIsLoading(true);
         try {
+            console.log('[Login] calling AuthContext login...');
             await login(email, password);
+            console.log('[Login] AuthContext login resolved, navigating...');
             navigate('/dashboard', { replace: true });
         } catch (err: unknown) {
+            console.error('[Login] caught error:', err);
             setError(err instanceof Error ? err.message : 'Invalid email or password');
         } finally {
+            console.log('[Login] finally block, releasing loading state');
             setIsLoading(false);
         }
     };

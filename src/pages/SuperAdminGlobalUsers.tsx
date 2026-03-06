@@ -24,6 +24,7 @@ type ProfileRow = {
     role: string;
     tenant_id: string | null;
     region: string | null;
+    is_active: boolean; // Add is_active
     created_at: string;
 };
 
@@ -56,10 +57,11 @@ export function SuperAdminGlobalUsers() {
     const fetchData = async () => {
         setLoading(true);
         try {
-            // Fetch users
+            // Fetch non-deleted users
             const { data: usersData, error: usersErr } = await supabase
                 .from('profiles')
                 .select('*')
+                .is('deleted_at', null)
                 .order('created_at', { ascending: false });
             if (usersErr) throw usersErr;
             setUsers(usersData || []);
@@ -151,6 +153,43 @@ export function SuperAdminGlobalUsers() {
         } catch (err) {
             console.error('Failed to update user:', err);
             alert('Failed to update user profile.');
+        }
+    };
+
+    const handleToggleActive = async (userId: string, currentStatus: boolean) => {
+        if (!window.confirm(`Are you sure you want to ${currentStatus ? 'suspend' : 'activate'} this user?`)) return;
+
+        try {
+            const { error } = await supabase
+                .from('profiles')
+                .update({ is_active: !currentStatus })
+                .eq('id', userId);
+
+            if (error) throw error;
+
+            setUsers(users.map(u => u.id === userId ? { ...u, is_active: !currentStatus } : u));
+        } catch (err) {
+            console.error('Failed to toggle active status:', err);
+            alert('Failed to update user status.');
+        }
+    };
+
+    const handleDeleteUser = async (userId: string) => {
+        if (!window.confirm("Are you sure you want to permanently delete this user? This cannot be undone.")) return;
+
+        try {
+            // Soft delete user via profiles
+            const { error } = await supabase
+                .from('profiles')
+                .update({ deleted_at: new Date().toISOString(), is_active: false })
+                .eq('id', userId);
+
+            if (error) throw error;
+
+            setUsers(users.filter(u => u.id !== userId));
+        } catch (err) {
+            console.error('Failed to delete user:', err);
+            alert('Failed to delete user profile.');
         }
     };
 
@@ -283,21 +322,35 @@ export function SuperAdminGlobalUsers() {
                                                     <div style={{ display: 'flex', gap: '0.5rem' }}>
                                                         <button
                                                             onClick={() => handleSaveEdit(u.id)}
-                                                            style={{ padding: '4px', background: '#10b981', color: 'white', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>
-                                                            <Check size={16} />
+                                                            className="gsp-btn-outline"
+                                                            style={{ padding: '4px 12px', fontSize: '0.8rem', color: '#10b981', borderColor: '#10b981' }}>
+                                                            <Check size={14} style={{ marginRight: '4px' }} /> Save
                                                         </button>
                                                         <button
                                                             onClick={() => setEditingUserId(null)}
-                                                            style={{ padding: '4px', background: '#ef4444', color: 'white', borderRadius: '4px', border: 'none', cursor: 'pointer' }}>
-                                                            <X size={16} />
+                                                            className="gsp-btn-outline"
+                                                            style={{ padding: '4px 12px', fontSize: '0.8rem', color: '#64748b', borderColor: '#cbd5e1' }}>
+                                                            <X size={14} style={{ marginRight: '4px' }} /> Cancel
                                                         </button>
                                                     </div>
                                                 ) : (
-                                                    <button
-                                                        onClick={() => startEdit(u)}
-                                                        style={{ padding: '4px 8px', background: 'transparent', border: '1px solid #cbd5e1', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', color: '#475569' }}>
-                                                        <Edit2 size={14} /> Edit
-                                                    </button>
+                                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                                        <button
+                                                            onClick={() => startEdit(u)}
+                                                            style={{ padding: '4px 8px', background: 'transparent', border: '1px solid #cbd5e1', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', color: '#475569' }}>
+                                                            <Edit2 size={14} /> Edit
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleToggleActive(u.id, u.is_active ?? true)}
+                                                            style={{ padding: '4px 8px', background: 'transparent', border: `1px solid ${u.is_active !== false ? '#f59e0b' : '#10b981'}`, borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', color: u.is_active !== false ? '#f59e0b' : '#10b981' }}>
+                                                            {u.is_active !== false ? 'Suspend' : 'Activate'}
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleDeleteUser(u.id)}
+                                                            style={{ padding: '4px 8px', background: 'transparent', border: '1px solid #ef4444', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', color: '#ef4444' }}>
+                                                            Delete
+                                                        </button>
+                                                    </div>
                                                 )}
                                             </td>
                                         </tr>
@@ -317,74 +370,76 @@ export function SuperAdminGlobalUsers() {
             </div>
 
             {/* Create User Modal */}
-            {isCreateOpen && (
-                <div className="modal-overlay">
-                    <div className="modal-content" style={{ maxWidth: '450px' }}>
-                        <div className="modal-header">
-                            <h3>Create New User</h3>
-                            <button className="icon-btn" onClick={() => setIsCreateOpen(false)}>
-                                <X size={20} />
-                            </button>
+            {
+                isCreateOpen && (
+                    <div className="modal-overlay">
+                        <div className="modal-content" style={{ maxWidth: '450px' }}>
+                            <div className="modal-header">
+                                <h3>Create New User</h3>
+                                <button className="icon-btn" onClick={() => setIsCreateOpen(false)}>
+                                    <X size={20} />
+                                </button>
+                            </div>
+                            <form onSubmit={handleCreateUser} className="modal-body">
+                                <p style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '1rem' }}>
+                                    This will provision a new user in the Supabase Auth system and instantly assign their capabilities.
+                                </p>
+
+                                {createError && <div style={{ padding: '0.75rem', backgroundColor: '#fee2e2', color: '#dc2626', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.85rem' }}>{createError}</div>}
+
+                                <div className="form-group">
+                                    <label>Full Name</label>
+                                    <input type="text" required value={newName} onChange={e => setNewName(e.target.value)} placeholder="John Doe" />
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" required value={newEmail} onChange={e => setNewEmail(e.target.value)} placeholder="john@example.com" />
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Temporary Password</label>
+                                    <input type="password" required value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="Min 6 characters" />
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Platform Role</label>
+                                    <select value={newRole} onChange={e => setNewRole(e.target.value)} required>
+                                        <option value="family">Family (Client)</option>
+                                        <option value="field-executive">Field Executive</option>
+                                        <option value="supervisor">Supervisor</option>
+                                        <option value="vendor">Vendor</option>
+                                        <option value="tenant-admin">Tenant Admin</option>
+                                        <option value="super-admin">Super Admin</option>
+                                    </select>
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Assigned Tenant</label>
+                                    <select value={newTenant} onChange={e => setNewTenant(e.target.value)}>
+                                        <option value="">-- No Tenant (Global Access) --</option>
+                                        {tenants.map(t => (
+                                            <option key={t.id} value={t.id}>{t.name}</option>
+                                        ))}
+                                    </select>
+                                    <span style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '4px', display: 'block' }}>
+                                        Required for Tenant Admins, Supervisors, and Field Executives to see their data.
+                                    </span>
+                                </div>
+
+                                <div className="modal-actions">
+                                    <button type="button" className="action-btn secondary" onClick={() => setIsCreateOpen(false)} disabled={creating}>
+                                        Cancel
+                                    </button>
+                                    <button type="submit" className="action-btn primary" disabled={creating}>
+                                        {creating ? 'Provisioning...' : 'Provision User'}
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                        <form onSubmit={handleCreateUser} className="modal-body">
-                            <p style={{ fontSize: '0.85rem', color: '#64748b', marginBottom: '1rem' }}>
-                                This will provision a new user in the Supabase Auth system and instantly assign their capabilities.
-                            </p>
-
-                            {createError && <div style={{ padding: '0.75rem', backgroundColor: '#fee2e2', color: '#dc2626', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.85rem' }}>{createError}</div>}
-
-                            <div className="form-group">
-                                <label>Full Name</label>
-                                <input type="text" required value={newName} onChange={e => setNewName(e.target.value)} placeholder="John Doe" />
-                            </div>
-
-                            <div className="form-group">
-                                <label>Email Address</label>
-                                <input type="email" required value={newEmail} onChange={e => setNewEmail(e.target.value)} placeholder="john@example.com" />
-                            </div>
-
-                            <div className="form-group">
-                                <label>Temporary Password</label>
-                                <input type="password" required value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="Min 6 characters" />
-                            </div>
-
-                            <div className="form-group">
-                                <label>Platform Role</label>
-                                <select value={newRole} onChange={e => setNewRole(e.target.value)} required>
-                                    <option value="family">Family (Client)</option>
-                                    <option value="field-executive">Field Executive</option>
-                                    <option value="supervisor">Supervisor</option>
-                                    <option value="vendor">Vendor</option>
-                                    <option value="tenant-admin">Tenant Admin</option>
-                                    <option value="super-admin">Super Admin</option>
-                                </select>
-                            </div>
-
-                            <div className="form-group">
-                                <label>Assigned Tenant</label>
-                                <select value={newTenant} onChange={e => setNewTenant(e.target.value)}>
-                                    <option value="">-- No Tenant (Global Access) --</option>
-                                    {tenants.map(t => (
-                                        <option key={t.id} value={t.id}>{t.name}</option>
-                                    ))}
-                                </select>
-                                <span style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '4px', display: 'block' }}>
-                                    Required for Tenant Admins, Supervisors, and Field Executives to see their data.
-                                </span>
-                            </div>
-
-                            <div className="modal-actions">
-                                <button type="button" className="action-btn secondary" onClick={() => setIsCreateOpen(false)} disabled={creating}>
-                                    Cancel
-                                </button>
-                                <button type="submit" className="action-btn primary" disabled={creating}>
-                                    {creating ? 'Provisioning...' : 'Provision User'}
-                                </button>
-                            </div>
-                        </form>
                     </div>
-                </div>
-            )}
+                )
+            }
         </div>
     );
 }

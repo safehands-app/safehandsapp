@@ -100,16 +100,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             throw new Error('Your account profile does not exist in the database. Please contact support.');
         }
 
+        if (data.is_active === false) {
+            throw new Error('Your account has been suspended. Please contact your administrator.');
+        }
+
         setUser(profileToUser(data as Profile));
     }
 
     const login = async (email: string, password: string) => {
+        console.log('[AuthContext] login called');
         setLoading(true);
         try {
-            const { error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) throw new Error(error.message);
-        } finally {
-            // loading is released by onAuthStateChange after profile is fetched
+            console.log('[AuthContext] calling signInWithPassword...');
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+            console.log('[AuthContext] signInWithPassword returned', { data, error });
+            if (error) {
+                setLoading(false); // ← release on auth error (wrong password etc.)
+                throw new Error(error.message);
+            }
+            // onAuthStateChange will set loading=false after profile loads.
+            // Safety net: if it never fires within 5s, release loading anyway.
+            setTimeout(() => setLoading(false), 5000);
+        } catch (err) {
+            console.error('[AuthContext] login caught error:', err);
+            setLoading(false); // ← release on any unexpected error
+            throw err;
         }
     };
 
