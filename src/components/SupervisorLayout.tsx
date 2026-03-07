@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../theme-provider';
 import {
@@ -11,15 +11,15 @@ import './SupervisorLayout.css';
 export function SupervisorLayout() {
     const { user, logout } = useAuth();
     const { theme, setTheme } = useTheme();
-    const navigate = useNavigate();
     const [regionOpen, setRegionOpen] = useState(false);
     const [selectedRegion, setSelectedRegion] = useState('Mumbai North');
 
     const regions = ['Mumbai North', 'Mumbai South', 'Mumbai Central', 'Pune', 'Nashik'];
 
-    const handleLogout = () => {
-        logout();
-        navigate('/');
+    const handleLogout = async (e: React.MouseEvent) => {
+        e.stopPropagation();
+        await logout();
+        window.location.href = '/#/auth/login';
     };
 
     const toggleTheme = () => {
